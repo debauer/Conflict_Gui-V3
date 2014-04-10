@@ -21,9 +21,16 @@ class Dfm : public Data{
     public:
         void RequestData();
         Dfm();
-    signals:
+        int getWaterFlow();
+        int getPulsePerLiter();
+        int getMinFlow();
+
+signals:
         // Changed() von parant!
-    public slots:
+public slots:
+        void setWaterFlow(int value);
+        void setPulsePerLiter(int value);
+        void setMinFlow(int value);
         void ProcessData(Carriage *car); // Parant Member überladen
 
 };

@@ -26,6 +26,9 @@ bool Uart::Open(QString adresse){
 
     // Prüfen ob geöffnet
     if(serial.port->open(QextSerialPort::ReadWrite)){
+        timer = new QTimer();
+        timer->start(timerInterval);
+        QObject::connect(timer, SIGNAL(timeout()),this,SLOT(sendData()));
         QObject::connect(serial.port, SIGNAL(readyRead()),this,SLOT(RcvData()));
         serial.portNr = adresse.toInt();
         serial.open = true;
@@ -37,6 +40,7 @@ bool Uart::Open(QString adresse){
 
 bool Uart::Close(){
     if(serial.open == true){
+        QObject::disconnect(timer, SIGNAL(timeout()),this,SLOT(sendData()));
         QObject::disconnect(serial.port, SIGNAL(readyRead()),this,SLOT(RcvData()));
         serial.port->close();
         serial.portNr = 0;
@@ -72,7 +76,21 @@ bool Uart::IsOpen(){
 
 void Uart::SendString(QString str){
     if(this->IsOpen()){
+
         core->printDebug(QString("String") + str.toLatin1() + QString(" Länge ") + QString::number(str.length()));
-        serial.port->write(str.toLatin1());
+        //serial.port->write(str.toLatin1());
+        txStack.push(str);
+        //qDebug() << gesendet << "  " << (str.remove(0x0D).toLatin1() + QString(" Länge ") + QString::number(str.length()));
     }
+}
+
+void Uart::sendData(){
+    if(!txStack.isEmpty()){
+        gesendet++;
+        QString str = txStack.pop();
+        serial.port->write(str.toLatin1());
+        qDebug() << gesendet << "  " << (str.remove(0x0D).toLatin1() + QString(" Länge ") + QString::number(str.length()));
+    }
+    //qDebug() << "timer goil!";
+    timer->start(timerInterval);
 }

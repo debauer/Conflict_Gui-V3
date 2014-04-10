@@ -24,6 +24,37 @@ void Dfm::ProcessData(Carriage *car){
     }
 }
 
+
+int Dfm::getWaterFlow()
+{
+    return waterFlow.value;
+}
+
+void Dfm::setWaterFlow(int value)
+{
+    SetValue(&waterFlow ,value);
+}
+
+int Dfm::getPulsePerLiter()
+{
+    return pulsePerLiter.value;
+}
+
+void Dfm::setPulsePerLiter(int value)
+{
+    SetValue(&pulsePerLiter ,value);
+}
+
+int  Dfm::getMinFlow()
+{
+    return minFlow.value;
+}
+
+void Dfm::setMinFlow(int value)
+{
+    SetValue(&minFlow ,value);
+}
+
 void Dfm::RequestData(){
     // emit PushToHw(new Carriage(1, 78, 1, 0));
 }

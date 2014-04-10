@@ -45,6 +45,7 @@ public slots:
     void debugConsole(int iihh);
     void updateGui(ConflictCore* core,QString dataClass);
     void updateTabKanaele(int kanal);
+    void updateTabKanaeleGrenzwert(int kanal);
     void speicherKanal();
 //    void speicherTemperatur();
 };

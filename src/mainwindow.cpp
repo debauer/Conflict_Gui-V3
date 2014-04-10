@@ -46,6 +46,7 @@ MainWindow::~MainWindow(){
 void MainWindow::connectCore(ConflictCore* core){
     QObject::connect (core, SIGNAL(debugOutput(QString)), this, SLOT(debugConsole(QString)));
     QObject::connect (core, SIGNAL(Changed(ConflictCore*,QString)), this, SLOT(updateGui(ConflictCore*,QString)));
+
     QObject::connect(ui->ledColorGreen, SIGNAL(sliderMoved(int)),&core->led, SLOT(setGreen(int)));
     QObject::connect(ui->ledColorRed, SIGNAL(valueChanged(int)),&core->led, SLOT(setRed(int)));
     QObject::connect(ui->ledColorBlue, SIGNAL(valueChanged(int)),&core->led, SLOT(setBlue(int)));
@@ -55,10 +56,21 @@ void MainWindow::connectCore(ConflictCore* core){
                                                       ui->ledColorBlue->setValue(core->led.getBlue());
                                                       ui->ledModus->setCurrentIndex(core->led.getMode());
                                                     });
-//    QObject::connect(&core->dfm,&Dfm::Changed,[=]() { //ui->optionenDfmImpulse->setValue(core->dfm.get);
-//                                                    });
-    QObject::connect(&core->kanal[0],&Kanal::Changed,[=]() {
-                                                           });
+
+    QObject::connect(ui->optionenAnzeigeBeleuchtung, SIGNAL(valueChanged(int)),&core->lcd, SLOT(setBacklight(int)));
+    QObject::connect(ui->optionenAnzeigeKontrast, SIGNAL(valueChanged(int)),&core->lcd, SLOT(setContrast(int)));
+
+    QObject::connect(ui->optionenDfmImpulse, SIGNAL(valueChanged(int)),&core->dfm, SLOT(setPulsePerLiter(int)));
+    QObject::connect(ui->optionenAlarmMinDurchfluss, SIGNAL(valueChanged(int)),&core->dfm, SLOT(setMinFlow(int)));
+
+    QObject::connect(&core->dfm,&Dfm::Changed,[=]() { ui->optionenDfmImpulse->setValue(core->dfm.getPulsePerLiter());
+                                                      ui->optionenAlarmMinDurchfluss->setValue(core->dfm.getMinFlow());
+                                                      // show
+                                                    });
+    QObject::connect(ui->optionenAlarmMinDurchfluss, SIGNAL(valueChanged(int)),&core->dfm, SLOT(setMinFlow(int)));
+    QObject::connect(ui->kanalSpeichern,SIGNAL(clicked()),this, SLOT(speicherKanal()));
+    QObject::connect(ui->kanalAktiv,SIGNAL(currentIndexChanged(int)),this, SLOT(updateTabKanaele(int)));
+    QObject::connect(ui->kanalGrenzwert,SIGNAL(currentIndexChanged(int)),this, SLOT(updateTabKanaeleGrenzwert(int)));
 
 }
 
@@ -78,8 +90,9 @@ ConflictCore* MainWindow::newCore(){
 void MainWindow::newCoreSerial(int serId){
      ConflictCore *core = this->newCore();
      core->connectSerial(serId);
-     ConflictWidget *conflictWidget = new ConflictWidget();
-     Ui::ConflictWidget *conflictUi = conflictWidget->getObject();
+     this->aktivCore = core;
+     //ConflictWidget *conflictWidget = new ConflictWidget();
+     //Ui::ConflictWidget *conflictUi = conflictWidget->getObject();
      //ui->Tabs->addTab(conflictWidget,QString(""));
 }
 
@@ -103,13 +116,24 @@ void MainWindow::updateGui(ConflictCore* core,QString dataClass){
 }
 
 void MainWindow::updateTabKanaele(int kanal){
+    Kanal* k = &aktivCore->kanal[kanal];
+    ui->kanalAutoOn->setChecked((bool)k->getAutoMode());
+    ui->kanalAutoCanStop->setChecked((bool)k->getStopEnabled());
+    ui->kanalAutoMinimal->setValue(k->getMinPower());
+    ui->kanalAutoStart->setValue(k->getStartupTime());
+    ui->KanalManuellPower->setValue(k->getManualPower());
+    ui->KanalStartupTime->setValue(k->getStartupTime());
+    this->updateTabKanaeleGrenzwert(ui->kanalGrenzwert->currentIndex());
+}
+
+void MainWindow::updateTabKanaeleGrenzwert(int kanal){
 
 }
 
 void  MainWindow::speicherKanal(){
     int index = ui->kanalAktiv->currentIndex();
     Kanal* k = &aktivCore->kanal[index];
-    k->setAutoMode((int) ui->kanalAutoOn->isChecked());
+    k->setAutoMode(ui->kanalAutoOn->isChecked()?1:0);
     k->setManualPower(ui->KanalManuellPower->value());
     if(ui->KanalGrenzwertMaxAktiv){
         if(ui->kanalGrenzwert->currentIndex() == 0)

@@ -44,7 +44,6 @@ int Led::getRed(){
 
 void Led::setRed(int value){
     this->SetValue(&red, value);
-    emit PushToHw(new Carriage(0,79, 1, red.value));
 }
 
 int Led::getBlue(){
@@ -53,7 +52,6 @@ int Led::getBlue(){
 
 void Led::setBlue(int value){
     this->SetValue(&blue, value);
-    emit PushToHw(new Carriage(0,79, 3, blue.value));
 }
 
 int Led::getGreen(){
@@ -62,7 +60,6 @@ int Led::getGreen(){
 
 void Led::setGreen(int value){
     this->SetValue(&green, value);
-    emit PushToHw(new Carriage(0,79, 2, green.value));
 }
 
 int Led::getMode(){
@@ -71,6 +68,5 @@ int Led::getMode(){
 
 void Led::setMode(int value){
     this->SetValue(&mode, value);
-    emit PushToHw(new Carriage(0,78, 1, mode.value));
 }
 

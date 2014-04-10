@@ -34,7 +34,9 @@ void Data::SetValue (intValue *ptr, int value){
     }
 
     if(newValue != ptr->value){
+        ptr->car.setData(newValue);
         ptr->value = newValue;
         emit this->Changed();
+        emit PushToHw(new Carriage(0,ptr->car.getId(), ptr->car.getIndex(), ptr->car.getData()));
     }
 }

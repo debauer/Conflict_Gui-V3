@@ -1,6 +1,9 @@
 #ifndef UART_H
 #define UART_H
 
+#include <QTimer>
+#include <QStack>
+
 #include "conflict_core.h"
 
 #include "qextserialport.h"
@@ -22,8 +25,13 @@ class Uart : public QObject, public AbsInterface{
     private:
         ConflictCore *core;
         serialStruct serial;
+        QTimer *timer;
+        QStack<QString> txStack;
+        int timerInterval = 10;
+        int gesendet = 0;
     public slots:
         void RcvData();
+        void sendData(); // timer event
     public:
         Uart (ConflictCore *core);
         ~Uart();

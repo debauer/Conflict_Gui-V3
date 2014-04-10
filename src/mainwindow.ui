@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>465</width>
-    <height>314</height>
+    <width>770</width>
+    <height>456</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,10 +30,10 @@
     <property name="horizontalSpacing">
      <number>6</number>
     </property>
-    <item row="0" column="1">
+    <item row="0" column="0">
      <widget class="QTabWidget" name="tabs">
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabInfo">
        <attribute name="title">
@@ -758,7 +758,20 @@ border-radius: 4px;
         <string>Optionen</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_27">
-        <item row="1" column="0">
+        <item row="4" column="0" colspan="2">
+         <spacer name="verticalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="0" colspan="2">
          <widget class="QGroupBox" name="groupBox_3">
           <property name="title">
            <string>Alarm</string>
@@ -813,7 +826,7 @@ border-radius: 4px;
            <item row="0" column="2">
             <widget class="QLabel" name="label_29">
              <property name="text">
-              <string>Liter pro Stunde</string>
+              <string>L/Hour</string>
              </property>
             </widget>
            </item>
@@ -887,96 +900,31 @@ border-radius: 4px;
              </property>
             </widget>
            </item>
-           <item row="0" column="3">
-            <spacer name="horizontalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QGroupBox" name="groupBox_6">
+          <property name="title">
+           <string>Sonstiges</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_31">
+           <item row="0" column="0" alignment="Qt::AlignTop">
+            <widget class="QCheckBox" name="optionenStartMinimiert">
+             <property name="text">
+              <string>Start minimiert</string>
              </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
+            </widget>
            </item>
           </layout>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="0" column="1" colspan="2">
          <widget class="QGroupBox" name="groupBox_4">
           <property name="title">
            <string>Display</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_30">
-           <item row="1" column="1">
-            <widget class="QSlider" name="optionenAnzeigeKontrast">
-             <property name="styleSheet">
-              <string notr="true">QSlider::groove:horizontal {
-border: 1px solid #bbb;
-background: white;
-height: 10px;
-border-radius: 4px;
-}
-
-QSlider::sub-page:horizontal {
-background: gray;
-border: 1px solid #777;
-height: 10px;
-border-radius: 4px;
-}
-
-QSlider::add-page:horizontal {
-background: #fff;
-border: 1px solid #777;
-height: 10px;
-border-radius: 4px;
-}
-
-QSlider::handle:horizontal {
-background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-    stop:0 #eee, stop:1 #ccc);
-border: 1px solid #777;
-width: 13px;
-margin-top: -2px;
-margin-bottom: -2px;
-border-radius: 4px;
-}
-
-QSlider::handle:horizontal:hover {
-background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-    stop:0 #fff, stop:1 #ddd);
-border: 1px solid #444;
-border-radius: 4px;
-}
-
-QSlider::sub-page:horizontal:disabled {
-background: #bbb;
-border-color: #999;
-}
-
-QSlider::add-page:horizontal:disabled {
-background: #eee;
-border-color: #999;
-}
-
-QSlider::handle:horizontal:disabled {
-background: #eee;
-border: 1px solid #aaa;
-border-radius: 4px;
-}</string>
-             </property>
-             <property name="maximum">
-              <number>63</number>
-             </property>
-             <property name="value">
-              <number>20</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_30">
              <property name="text">
@@ -1059,37 +1007,76 @@ border-radius: 4px;
              </property>
             </widget>
            </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QGroupBox" name="groupBox_6">
-          <property name="title">
-           <string>Sonstiges</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_31">
-           <item row="0" column="0" alignment="Qt::AlignTop">
-            <widget class="QCheckBox" name="optionenStartMinimiert">
-             <property name="text">
-              <string>Start minimiert</string>
+           <item row="1" column="1">
+            <widget class="QSlider" name="optionenAnzeigeKontrast">
+             <property name="styleSheet">
+              <string notr="true">QSlider::groove:horizontal {
+border: 1px solid #bbb;
+background: white;
+height: 10px;
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal {
+background: gray;
+border: 1px solid #777;
+height: 10px;
+border-radius: 4px;
+}
+
+QSlider::add-page:horizontal {
+background: #fff;
+border: 1px solid #777;
+height: 10px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal {
+background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+    stop:0 #eee, stop:1 #ccc);
+border: 1px solid #777;
+width: 13px;
+margin-top: -2px;
+margin-bottom: -2px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal:hover {
+background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+    stop:0 #fff, stop:1 #ddd);
+border: 1px solid #444;
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal:disabled {
+background: #bbb;
+border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+background: #eee;
+border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+background: #eee;
+border: 1px solid #aaa;
+border-radius: 4px;
+}</string>
+             </property>
+             <property name="maximum">
+              <number>63</number>
+             </property>
+             <property name="value">
+              <number>20</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
           </layout>
          </widget>
-        </item>
-        <item row="4" column="0" colspan="2">
-         <spacer name="verticalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </widget>
@@ -1182,7 +1169,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>465</width>
+     <width>770</width>
      <height>21</height>
     </rect>
    </property>

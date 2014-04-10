@@ -6,12 +6,31 @@ Kanal::Kanal() : Data(){
     for(i = 0;i<24;i++){
         maxTemp[i].max = 255;
         maxTemp[i].min = 0;
-        maxTemp[i].value = 0;
+        maxTemp[i].value = 255;
+        maxTemp[i].car.setIndex(i+1);
 
         minTemp[i].max = 255;
         minTemp[i].min = 0;
-        minTemp[i].value = 0;
+        minTemp[i].value = 250;
+        minTemp[i].car.setIndex(i+1);
     }
+}
+
+void Kanal::setId(int id){
+    this->id = id;
+    int i;
+    for(i = 0;i<24;i++){
+        maxTemp[i].car.setId(20+id);
+        minTemp[i].car.setId(10+id);
+    }
+    rpm.car.setIndex(id);
+    power.car.setIndex(id);
+    manualPower.car.setIndex(id);
+    startupTime.car.setIndex(id);
+    minPower.car.setIndex(id);
+    autoMode.car.setIndex(id);
+    stopEnabled.car.setIndex(id);
+    threshold.car.setIndex(id);
 }
 
 void Kanal::ProcessData(Carriage *car){
