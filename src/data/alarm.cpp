@@ -33,13 +33,13 @@ void alarm::ProcessData(Carriage *car){
     if(car->getId() == 50){
         switch(car->getIndex()){
             case 1:
-                this->SetValue(&overTemperatur,car->getData().toInt());
+                this->SetValue(&overTemperatur,car->getData().toInt(),DATA_FROM_HW);
                 break;
             case 2:
-                this->SetValue(&fanBlocked,car->getData().toInt());
+                this->SetValue(&fanBlocked,car->getData().toInt(),DATA_FROM_HW);
                 break;
             case 3:
-                this->SetValue(&lowWaterflow,car->getData().toInt());
+                this->SetValue(&lowWaterflow,car->getData().toInt(),DATA_FROM_HW);
                 break;
         }
     }

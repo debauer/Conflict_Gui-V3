@@ -22,16 +22,16 @@ void Lcd::ProcessData(Carriage *car){
     switch(car->getId()){
         case 77:
             if(car->getIndex() == 1){
-                this->SetValue(&backlight,car->getData().toInt());
+                this->SetValue(&backlight,car->getData().toInt(),DATA_FROM_HW);
             }else if(car->getIndex() == 2){
-                this->SetValue(&contrast,car->getData().toInt());
+                this->SetValue(&contrast,car->getData().toInt(),DATA_FROM_HW);
             }
             break;
         case 80:
-            this->SetValue(&content[car->getIndex()],car->getData().toInt());
+            this->SetValue(&content[car->getIndex()],car->getData().toInt(),DATA_FROM_HW);
             break;
         case 81:
-            this->SetValue(&screens[car->getIndex()],car->getData().toInt());
+            this->SetValue(&screens[car->getIndex()],car->getData().toInt(),DATA_FROM_HW);
             break;
     }
 }

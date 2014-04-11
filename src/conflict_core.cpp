@@ -81,6 +81,7 @@ void ConflictCore::rcvCarriage(Carriage *car){
 }
 
 void ConflictCore::sendCarriage(Carriage *car){
+    //qDebug() << "Sende String" << car->toString();
     this->printDebug(QString("Sende Carriage:") + car->toString());
     interface->SendString(car->toString());
 }

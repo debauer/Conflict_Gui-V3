@@ -305,6 +305,121 @@
                <string>Temperatur 1</string>
               </property>
              </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 6</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 7</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 8</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 9</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 10</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 11</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 12</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 13</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 14</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 15</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 16</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 17</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 18</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 19</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 20</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 21</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 22</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 23</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Temperatur 24</string>
+              </property>
+             </item>
             </widget>
            </item>
           </layout>

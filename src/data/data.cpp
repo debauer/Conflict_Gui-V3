@@ -28,7 +28,11 @@ void Data::setId(int id){
     this->id = id;
 }
 
-void Data::SetValue (intValue *ptr, int value){
+void Data::SetValue (intValue (*ptr), int value){
+    this->SetValue(ptr,value,DATA_DEFAULT);
+}
+
+void Data::SetValue (intValue *ptr, int value, QString option){
 
     // ===========================
     // Min/Max Grenzen überprüfen.
@@ -51,9 +55,15 @@ void Data::SetValue (intValue *ptr, int value){
 
     if(newValue != ptr->value){
         ptr->car.setData(newValue);
+        QString *oldStr = new QString(QString::number(ptr->value));
         ptr->value = newValue;
-
-        emit this->Changed(); // Schreien wir mal alles an!
-        emit PushToHw(new Carriage(0,ptr->car.getId(), ptr->car.getIndex(), ptr->car.getData())); // eigentlich sollte emit PushToHw(ptr->car) ja reichen... aber funzt ned.
+        if(option == DATA_DEFAULT){
+            emit this->Changed(); // Schreien wir mal alles an!
+            emit PushToHw(new Carriage(0,ptr->car.getId(), ptr->car.getIndex(), ptr->car.getData())); // eigentlich sollte emit PushToHw(ptr->car) ja reichen... aber funzt ned.
+            //qDebug() << "DATA_DEFAULT" << "OLD:" << oldStr->toLatin1() << "NEW:" << newValue;
+        }else if(option == DATA_FROM_HW){
+            emit this->Changed(); // Schreien wir mal alles an!
+            //qDebug() << "DATA_FROM_HW";
+        }
     }
 }

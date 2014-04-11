@@ -7,22 +7,22 @@ void Rechner::ProcessData(Carriage *car){
     switch(car->getId()){
         case 40:
             if(car->getIndex() == 1){
-                this->SetValue(&hour,car->getData().toInt());
+                this->SetValue(&hour,car->getData().toInt(),DATA_FROM_HW);
             }else if(car->getIndex() == 2){
-                this->SetValue(&minute,car->getData().toInt());
+                this->SetValue(&minute,car->getData().toInt(),DATA_FROM_HW);
             }else if(car->getIndex() == 3){
-                this->SetValue(&secund,car->getData().toInt());
+                this->SetValue(&secund,car->getData().toInt(),DATA_FROM_HW);
             }
             break;
         case 41:
             if(car->getIndex() == 1){
-                this->SetValue(&cpuFreq,car->getData().toInt());
+                this->SetValue(&cpuFreq,car->getData().toInt(),DATA_FROM_HW);
             }else if(car->getIndex() == 2){
-                this->SetValue(&cpuUsage,car->getData().toInt());
+                this->SetValue(&cpuUsage,car->getData().toInt(),DATA_FROM_HW);
             }else if(car->getIndex() == 3){
-                this->SetValue(&gpuUsage,car->getData().toInt());
+                this->SetValue(&gpuUsage,car->getData().toInt(),DATA_FROM_HW);
             }else if(car->getIndex() == 4){
-                this->SetValue(&ramUsage,car->getData().toInt());
+                this->SetValue(&ramUsage,car->getData().toInt(),DATA_FROM_HW);
             }
             break;
     }

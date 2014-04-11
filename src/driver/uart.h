@@ -28,7 +28,8 @@ class Uart : public QObject, public AbsInterface{
         QTimer *timer;
         QStack<QString> txStack;
         int timerInterval = 10;
-        int gesendet = 0;
+        int popped = 0;
+        int pushed = 0;
     public slots:
         void RcvData();
         void sendData(); // timer event

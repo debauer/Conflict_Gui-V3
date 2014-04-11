@@ -19,6 +19,10 @@
  *
  */
 
+#define DATA_FROM_HW QString("fromHW")
+#define DATA_FROM_GUI QString("fromGui")
+#define DATA_DEFAULT QString("default")
+
 class Data : public QObject{
     Q_OBJECT
 
@@ -26,6 +30,7 @@ protected:
     int id;     // Laufende nummer für Instanzen. Benötigt um signals auf ProcessData einer Instanz zuzuweisen.
 public:
     void SetValue (intValue (*ptr), int value); // möglichst nicht überschreiben!
+    void SetValue (intValue (*ptr), int value, QString option);
     void setId(int id);
     Data();
 signals:

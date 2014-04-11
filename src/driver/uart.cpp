@@ -76,20 +76,24 @@ bool Uart::IsOpen(){
 
 void Uart::SendString(QString str){
     if(this->IsOpen()){
-
         core->printDebug(QString("String") + str.toLatin1() + QString(" Länge ") + QString::number(str.length()));
         //serial.port->write(str.toLatin1());
         txStack.push(str);
-        //qDebug() << gesendet << "  " << (str.remove(0x0D).toLatin1() + QString(" Länge ") + QString::number(str.length()));
+        pushed++;
+        qDebug() << "push" << pushed << (str.remove(0x0D).toLatin1());
+    }else{
+        qDebug() << "Interface ist geschlossen!!";
     }
 }
 
 void Uart::sendData(){
+    //if(!txStack.isEmpty()){
     if(!txStack.isEmpty()){
-        gesendet++;
+        popped++;
+        //txStack.pop();
         QString str = txStack.pop();
         serial.port->write(str.toLatin1());
-        qDebug() << gesendet << (str.remove(0x0D).toLatin1());
+        qDebug() << "pop" << popped << (str.remove(0x0D).toLatin1());
     }
     //qDebug() << "timer goil!";
     //timer->start(timerInterval);

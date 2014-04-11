@@ -35,42 +35,45 @@ void Kanal::setId(int id){
         autoMode.car.setIndex(id);
         stopEnabled.car.setIndex(id);
         threshold.car.setIndex(id);
+        qDebug() << "Kanal ID" << id;
+    }else{
+        qDebug() << "falsche Kanal ID" << id;
     }
 }
 
 void Kanal::ProcessData(Carriage *car){
 
     if(car->getId() == (10 + this->id)){        // min Temp
-        this->SetValue(&minTemp[car->getIndex()],car->getData().toInt());
+        this->SetValue(&minTemp[car->getIndex()],car->getData().toInt(),DATA_FROM_HW);
     }
     else if(car->getId() == (20 + this->id)){   // max Temp
-        this->SetValue(&maxTemp[car->getIndex()],car->getData().toInt());
+        this->SetValue(&maxTemp[car->getIndex()],car->getData().toInt(),DATA_FROM_HW);
     }
     else if(car->getIndex() == this->id){
         switch(car->getId()){
             case 61:
-                this->SetValue(&rpm,car->getData().toInt());
+                this->SetValue(&rpm,car->getData().toInt(),DATA_FROM_HW);
                 break;
             case 62:
-                this->SetValue(&power,car->getData().toInt());
+                this->SetValue(&power,car->getData().toInt(),DATA_FROM_HW);
                 break;
             case 71:
-                this->SetValue(&manualPower,car->getData().toInt());
+                this->SetValue(&manualPower,car->getData().toInt(),DATA_FROM_HW);
                 break;
             case 72:
-                this->SetValue(&startupTime,car->getData().toInt());
+                this->SetValue(&startupTime,car->getData().toInt(),DATA_FROM_HW);
                 break;
             case 73:
-                this->SetValue(&minPower,car->getData().toInt());
+                this->SetValue(&minPower,car->getData().toInt(),DATA_FROM_HW);
                 break;
             case 74:
-                this->SetValue(&autoMode,car->getData().toInt());
+                this->SetValue(&autoMode,car->getData().toInt(),DATA_FROM_HW);
                 break;
             case 75:
-                this->SetValue(&stopEnabled,car->getData().toInt());
+                this->SetValue(&stopEnabled,car->getData().toInt(),DATA_FROM_HW);
                 break;
             case 76:
-                this->SetValue(&threshold,car->getData().toInt());
+                this->SetValue(&threshold,car->getData().toInt(),DATA_FROM_HW);
                 break;
         }
     }

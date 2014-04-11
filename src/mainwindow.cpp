@@ -135,16 +135,26 @@ void  MainWindow::speicherKanal(){
     k->setAutoMode(ui->kanalAutoOn->isChecked()?1:0);
     k->setManualPower(ui->KanalManuellPower->value());
     if(ui->KanalGrenzwertMaxAktiv){
-        if(ui->kanalGrenzwert->currentIndex() == 0)
+        if(ui->kanalGrenzwert->currentIndex() != 0)
             k->setMaxTemp(ui->kanalGrenzwert->currentIndex()-1,ui->KanalGrenzwertMax->value());
         else
             k->setAllMaxTemp(ui->KanalGrenzwertMax->value());
+    }else{
+        if(ui->kanalGrenzwert->currentIndex() != 0)
+            k->setMinTemp(ui->kanalGrenzwert->currentIndex()-1,255);
+        else
+            k->setAllMinTemp(255);
     }
     if(ui->KanalGrenzwertMinAktiv){
-        if(ui->kanalGrenzwert->currentIndex() == 0)
+        if(ui->kanalGrenzwert->currentIndex() != 0)
             k->setMinTemp(ui->kanalGrenzwert->currentIndex()-1,ui->KanalGrenzwertMin->value());
         else
             k->setAllMinTemp(ui->KanalGrenzwertMin->value());
+    }else{
+        if(ui->kanalGrenzwert->currentIndex() != 0)
+            k->setMinTemp(ui->kanalGrenzwert->currentIndex()-1,250);
+        else
+            k->setAllMinTemp(250);
     }
     k->setMinPower(ui->kanalAutoMinimal->value());
     k->setStartupTime(ui->KanalStartupTime->value());

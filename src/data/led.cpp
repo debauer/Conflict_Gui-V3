@@ -22,15 +22,15 @@ void Led::ProcessData(Carriage *car){
 
     switch(car->getId()){
         case 78:
-            this->SetValue(&mode,car->getData().toInt());
+            this->SetValue(&mode,car->getData().toInt(),DATA_FROM_HW);
             break;
         case 79:
             if(car->getIndex() == 1){
-                this->SetValue(&red,car->getData().toInt());
+                this->SetValue(&red,car->getData().toInt(),DATA_FROM_HW);
             }else if(car->getIndex() == 2){
-                this->SetValue(&green,car->getData().toInt());
+                this->SetValue(&green,car->getData().toInt(),DATA_FROM_HW);
             }else if(car->getIndex() == 3){
-                this->SetValue(&blue,car->getData().toInt());
+                this->SetValue(&blue,car->getData().toInt(),DATA_FROM_HW);
             }
             break;
         default:

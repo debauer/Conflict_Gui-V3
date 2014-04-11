@@ -13,11 +13,11 @@ void Dfm::ProcessData(Carriage *car){
         int index = car->getIndex();
         int data = car->getData().toInt();
         switch(id){
-            case 60: this->SetValue(&this->waterFlow,data); break;
+            case 60: this->SetValue(&this->waterFlow,data,DATA_FROM_HW); break;
             case 70: if(id == 70 && index == 1){
-                        this->SetValue(&this->pulsePerLiter,data);
+                        this->SetValue(&this->pulsePerLiter,data,DATA_FROM_HW);
                      }else if(id == 70 && index == 1){
-                        this->SetValue(&this->minFlow,data);
+                        this->SetValue(&this->minFlow,data,DATA_FROM_HW);
                      }
             break;
         }
