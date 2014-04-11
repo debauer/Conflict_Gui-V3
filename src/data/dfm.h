@@ -15,9 +15,9 @@ class Dfm : public Data{
     Q_OBJECT
 
     private:
-        intValue waterFlow;     // Aktueller Durchfluss
-        intValue pulsePerLiter; // Impulswertigkeit
-        intValue minFlow;       // Alarmgrenze
+        intValue waterFlow      = {0,0,999, Carriage(1,60,1,0)};   // Aktueller Durchfluss
+        intValue pulsePerLiter  = {0,0,9999,Carriage(1,70,1,0)};   // Impulswertigkeit
+        intValue minFlow        = {0,0,999, Carriage(1,70,2,0)};   // Alarmgrenze
     public:
         void RequestData();
         Dfm();

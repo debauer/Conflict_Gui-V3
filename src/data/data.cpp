@@ -1,23 +1,39 @@
 #include "data.h"
 
 Data::Data(){
-    static int maxId = 0;
-    this->id = maxId + 1;
-    maxId = this->id;
 }
 
 void Data::ProcessData(Carriage *car){
+
+    // ===========================
+    // Wird in Childs implementiert
+    // ===========================
+
 }
 
 void Data::RequestData(){
+
+    // ===========================
+    // Wird in Childs implementiert
+    // ===========================
+
 }
 
 void Data::setId(int id){
+
+    // ===========================
+    // id setzen falls es mehrere Objekte gibt.
+    // ===========================
+
     this->id = id;
 }
 
 void Data::SetValue (intValue *ptr, int value){
+
+    // ===========================
     // Min/Max Grenzen überprüfen.
+    // ===========================
+
     int newValue;
     if(value <= ptr->max && value >= ptr->min){
         // Value im erlaubten Bereich
@@ -36,7 +52,8 @@ void Data::SetValue (intValue *ptr, int value){
     if(newValue != ptr->value){
         ptr->car.setData(newValue);
         ptr->value = newValue;
-        emit this->Changed();
-        emit PushToHw(new Carriage(0,ptr->car.getId(), ptr->car.getIndex(), ptr->car.getData()));
+
+        emit this->Changed(); // Schreien wir mal alles an!
+        emit PushToHw(new Carriage(0,ptr->car.getId(), ptr->car.getIndex(), ptr->car.getData())); // eigentlich sollte emit PushToHw(ptr->car) ja reichen... aber funzt ned.
     }
 }

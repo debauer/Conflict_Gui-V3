@@ -71,7 +71,6 @@ void MainWindow::connectCore(ConflictCore* core){
     QObject::connect(ui->kanalSpeichern,SIGNAL(clicked()),this, SLOT(speicherKanal()));
     QObject::connect(ui->kanalAktiv,SIGNAL(currentIndexChanged(int)),this, SLOT(updateTabKanaele(int)));
     QObject::connect(ui->kanalGrenzwert,SIGNAL(currentIndexChanged(int)),this, SLOT(updateTabKanaeleGrenzwert(int)));
-
 }
 
 void MainWindow::disconnectCore(ConflictCore* core){

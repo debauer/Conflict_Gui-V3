@@ -14,23 +14,28 @@ Kanal::Kanal() : Data(){
         minTemp[i].value = 250;
         minTemp[i].car.setIndex(i+1);
     }
+    static int maxId = 0;
+    this->setId(maxId + 1);
+    maxId = this->id;
 }
 
 void Kanal::setId(int id){
-    this->id = id;
-    int i;
-    for(i = 0;i<24;i++){
-        maxTemp[i].car.setId(20+id);
-        minTemp[i].car.setId(10+id);
+    if(id >= 1 && id <= 4){
+        this->id = id;
+        int i;
+        for(i = 0;i<24;i++){
+            maxTemp[i].car.setId(20+id);
+            minTemp[i].car.setId(10+id);
+        }
+        rpm.car.setIndex(id);
+        power.car.setIndex(id);
+        manualPower.car.setIndex(id);
+        startupTime.car.setIndex(id);
+        minPower.car.setIndex(id);
+        autoMode.car.setIndex(id);
+        stopEnabled.car.setIndex(id);
+        threshold.car.setIndex(id);
     }
-    rpm.car.setIndex(id);
-    power.car.setIndex(id);
-    manualPower.car.setIndex(id);
-    startupTime.car.setIndex(id);
-    minPower.car.setIndex(id);
-    autoMode.car.setIndex(id);
-    stopEnabled.car.setIndex(id);
-    threshold.car.setIndex(id);
 }
 
 void Kanal::ProcessData(Carriage *car){

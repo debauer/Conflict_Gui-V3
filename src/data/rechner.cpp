@@ -1,7 +1,6 @@
 #include "rechner.h"
 
 Rechner::Rechner() : Data(){
-
 }
 
 void Rechner::ProcessData(Carriage *car){

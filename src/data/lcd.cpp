@@ -2,15 +2,19 @@
 
 Lcd::Lcd() : Data(){
     int i;
-    for(i = 0;i<256;i++){
+    for(i = 0;i<255;i++){
         content[i].max = 255;
         content[i].min = 0;
         content[i].value = 0;
+        content[i].car.setIndex(i+1);
+        content[i].car.setId(80);
     }
-    for(i = 0;i<32;i++){
+    for(i = 0;i<31;i++){
         screens[i].max = 255;
         screens[i].min = 0;
         screens[i].value = 0;
+        screens[i].car.setIndex(i+1);
+        screens[i].car.setId(81);
     }
 }
 

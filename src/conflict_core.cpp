@@ -28,7 +28,7 @@ ConflictCore::ConflictCore(){
 
     QObject::connect(signalMapper, SIGNAL(mapped(QString)),this, SLOT(ChangedData(QString)));
 
-    QObject::connect(this, SIGNAL(syncData()),&led,SLOT(RequestData()));
+    //QObject::connect(this, SIGNAL(syncData()),&led,SLOT(RequestData()));
 }
 
 void ConflictCore::connectSerial(int port){

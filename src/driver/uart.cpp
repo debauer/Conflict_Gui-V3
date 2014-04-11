@@ -89,8 +89,8 @@ void Uart::sendData(){
         gesendet++;
         QString str = txStack.pop();
         serial.port->write(str.toLatin1());
-        qDebug() << gesendet << "  " << (str.remove(0x0D).toLatin1() + QString(" Länge ") + QString::number(str.length()));
+        qDebug() << gesendet << (str.remove(0x0D).toLatin1());
     }
     //qDebug() << "timer goil!";
-    timer->start(timerInterval);
+    //timer->start(timerInterval);
 }
