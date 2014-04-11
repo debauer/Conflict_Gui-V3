@@ -35,7 +35,7 @@ void Kanal::setId(int id){
         autoMode.car.setIndex(id);
         stopEnabled.car.setIndex(id);
         threshold.car.setIndex(id);
-        qDebug() << "Kanal ID" << id;
+        //qDebug() << "Kanal ID" << id;
     }else{
         qDebug() << "falsche Kanal ID" << id;
     }

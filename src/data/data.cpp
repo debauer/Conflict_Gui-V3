@@ -58,12 +58,31 @@ void Data::SetValue (intValue *ptr, int value, QString option){
         QString *oldStr = new QString(QString::number(ptr->value));
         ptr->value = newValue;
         if(option == DATA_DEFAULT){
-            emit this->Changed(); // Schreien wir mal alles an!
+            emitChanged();
             emit PushToHw(new Carriage(0,ptr->car.getId(), ptr->car.getIndex(), ptr->car.getData())); // eigentlich sollte emit PushToHw(ptr->car) ja reichen... aber funzt ned.
             //qDebug() << "DATA_DEFAULT" << "OLD:" << oldStr->toLatin1() << "NEW:" << newValue;
         }else if(option == DATA_FROM_HW){
-            emit this->Changed(); // Schreien wir mal alles an!
+            emitChanged();
             //qDebug() << "DATA_FROM_HW";
         }
     }
+}
+
+void Data::disbaleChanged(){
+    changedAktiv = false;
+}
+
+void Data::enableChanged(){
+    changedAktiv = true;
+    if(wasChanged){
+        emit this->Changed();
+    }
+    wasChanged = false;
+}
+
+void Data::emitChanged(){
+    if(changedAktiv)
+        emit this->Changed(); // Schreien wir mal alles an!
+    else
+        wasChanged = true;
 }

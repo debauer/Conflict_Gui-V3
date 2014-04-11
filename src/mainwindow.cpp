@@ -102,55 +102,84 @@ void MainWindow::newCoreETH(QString ip){
 
 /* Haupt Update Worker */
 void MainWindow::updateGui(ConflictCore* core,QString dataClass){
-     if(dataClass == QString("led")){
-        ui->console->append(QString("updateGui LED"));
-     }else if (dataClass == QString("kanal1")){
-        //ui->infoKanal1RPM->setText(QString::number(core->kanal[0].getRpm()));
-     }else if (dataClass == QString("kanal2")){
-        //ui->infoKanal2RPM->setText(QString::number(core->kanal[1].getRpm()));
-     }else if (dataClass == QString("kanal3")){
-
-        //ui->infoKanal3RPM->setText(QString::number(core->kanal[2].getRpm()));
-     }
+    if(core == aktivCore){
+        int kanalId;
+         if(dataClass == QString("led")){
+            ui->console->append(QString("updateGui LED"));
+         }else if (dataClass == QString("kanal1")){
+             //qDebug() << "kanal1";
+             this->updateTabKanaele(1);
+            //ui->infoKanal1RPM->setText(QString::number(core->kanal[0].getRpm()));
+         }else if (dataClass == QString("kanal2")){
+             //qDebug() << "kanal2";
+             this->updateTabKanaele(2);
+            //ui->infoKanal2RPM->setText(QString::number(core->kanal[1].getRpm()));
+         }else if (dataClass == QString("kanal3")){
+             //qDebug() << "kanal3";
+             this->updateTabKanaele(3);
+            //ui->infoKanal3RPM->setText(QString::number(core->kanal[2].getRpm()));
+         }else if (dataClass == QString("kanal4")){
+             //qDebug() << "kanal4";
+             this->updateTabKanaele(4);
+            //ui->infoKanal3RPM->setText(QString::number(core->kanal[2].getRpm()));
+         }
+    }
 }
 
 void MainWindow::updateTabKanaele(int kanal){
-    Kanal* k = &aktivCore->kanal[kanal];
-    ui->kanalAutoOn->setChecked((bool)k->getAutoMode());
-    ui->kanalAutoCanStop->setChecked((bool)k->getStopEnabled());
-    ui->kanalAutoMinimal->setValue(k->getMinPower());
-    ui->kanalAutoStart->setValue(k->getStartupTime());
-    ui->KanalManuellPower->setValue(k->getManualPower());
-    ui->KanalStartupTime->setValue(k->getStartupTime());
-    this->updateTabKanaeleGrenzwert(ui->kanalGrenzwert->currentIndex());
+    if(kanal == (ui->kanalAktiv->currentIndex() + 1)){
+        qDebug() << "kanalTabUpdate" << ui->kanalAktiv->currentIndex() << kanal;
+        Kanal* k = &aktivCore->kanal[ui->kanalAktiv->currentIndex()];
+        ui->kanalAutoOn->setChecked((bool)k->getAutoMode());
+        ui->kanalAutoCanStop->setChecked((bool)k->getStopEnabled());
+        ui->kanalAutoMinimal->setValue(k->getMinPower());
+        ui->kanalAutoStart->setValue(k->getStartupTime());
+        ui->KanalManuellPower->setValue(k->getManualPower());
+        ui->KanalStartupTime->setValue(k->getStartupTime());
+        this->updateTabKanaeleGrenzwert(ui->kanalGrenzwert->currentIndex());
+    }
 }
 
 void MainWindow::updateTabKanaeleGrenzwert(int kanal){
-
+    Kanal* k = &aktivCore->kanal[ui->kanalAktiv->currentIndex()];
+    if(ui->kanalGrenzwert->currentIndex() == 0){ // all
+        ui->KanalGrenzwertMax->setValue(k->getMaxTemp(0));
+        ui->KanalGrenzwertMin->setValue(k->getMinTemp(0));
+    }else if(ui->kanalGrenzwert->currentIndex() <= 25 && ui->kanalGrenzwert->currentIndex() > 0){
+        ui->KanalGrenzwertMax->setValue(k->getMaxTemp(ui->kanalGrenzwert->currentIndex() - 1));
+        ui->KanalGrenzwertMin->setValue(k->getMinTemp(ui->kanalGrenzwert->currentIndex() - 1));
+    }
 }
 
 void  MainWindow::speicherKanal(){
     int index = ui->kanalAktiv->currentIndex();
     Kanal* k = &aktivCore->kanal[index];
+    k->disbaleChanged();
     k->setAutoMode(ui->kanalAutoOn->isChecked()?1:0);
     k->setManualPower(ui->KanalManuellPower->value());
-    if(ui->KanalGrenzwertMaxAktiv){
+    if(ui->KanalGrenzwertMaxAktiv->isChecked()){
+        if(ui->KanalGrenzwertMax->value() > 240)
+            ui->KanalGrenzwertMax->setValue(240);
         if(ui->kanalGrenzwert->currentIndex() != 0)
             k->setMaxTemp(ui->kanalGrenzwert->currentIndex()-1,ui->KanalGrenzwertMax->value());
         else
             k->setAllMaxTemp(ui->KanalGrenzwertMax->value());
     }else{
+        ui->KanalGrenzwertMax->setValue(0);
         if(ui->kanalGrenzwert->currentIndex() != 0)
-            k->setMinTemp(ui->kanalGrenzwert->currentIndex()-1,255);
+            k->setMaxTemp(ui->kanalGrenzwert->currentIndex()-1,255);
         else
-            k->setAllMinTemp(255);
+            k->setAllMaxTemp(255);
     }
-    if(ui->KanalGrenzwertMinAktiv){
+    if(ui->KanalGrenzwertMinAktiv->isChecked()){
+        if(ui->KanalGrenzwertMin->value() > 240)
+            ui->KanalGrenzwertMin->setValue(240);
         if(ui->kanalGrenzwert->currentIndex() != 0)
             k->setMinTemp(ui->kanalGrenzwert->currentIndex()-1,ui->KanalGrenzwertMin->value());
         else
             k->setAllMinTemp(ui->KanalGrenzwertMin->value());
     }else{
+        ui->KanalGrenzwertMin->setValue(0);
         if(ui->kanalGrenzwert->currentIndex() != 0)
             k->setMinTemp(ui->kanalGrenzwert->currentIndex()-1,250);
         else
@@ -160,6 +189,7 @@ void  MainWindow::speicherKanal(){
     k->setStartupTime(ui->KanalStartupTime->value());
     k->setStopEnabled((int) ui->kanalAutoCanStop->isChecked());
     k->setThreshold(ui->kanalAutoStart->value());
+    k->enableChanged();
 }
 
 

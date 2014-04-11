@@ -288,10 +288,17 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="maximum">
+              <number>255</number>
+             </property>
             </widget>
            </item>
            <item row="2" column="1" colspan="2">
-            <widget class="QSpinBox" name="KanalGrenzwertMax"/>
+            <widget class="QSpinBox" name="KanalGrenzwertMax">
+             <property name="maximum">
+              <number>255</number>
+             </property>
+            </widget>
            </item>
            <item row="0" column="0" colspan="4">
             <widget class="QComboBox" name="kanalGrenzwert">
@@ -470,6 +477,9 @@
                <width>50</width>
                <height>0</height>
               </size>
+             </property>
+             <property name="maximum">
+              <number>255</number>
              </property>
             </widget>
            </item>

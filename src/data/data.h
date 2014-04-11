@@ -25,12 +25,16 @@
 
 class Data : public QObject{
     Q_OBJECT
-
 protected:
+    int wasChanged = 0; // wollte kam wärend der pausierung ein Signal
+    int changedAktiv = 1;
     int id;     // Laufende nummer für Instanzen. Benötigt um signals auf ProcessData einer Instanz zuzuweisen.
 public:
     void SetValue (intValue (*ptr), int value); // möglichst nicht überschreiben!
     void SetValue (intValue (*ptr), int value, QString option);
+    void disbaleChanged();
+    void enableChanged();
+    void emitChanged();
     void setId(int id);
     Data();
 signals:
