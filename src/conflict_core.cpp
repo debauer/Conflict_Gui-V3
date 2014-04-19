@@ -25,6 +25,7 @@ ConflictCore::ConflictCore(){
     makeMapping(&system, QString("system"));
     makeMapping(&led, QString("led"));
     makeMapping(&lcd, QString("lcd"));
+    makeMapping(&alarm, QString("alarm"));
 
     QObject::connect(signalMapper, SIGNAL(mapped(QString)),this, SLOT(ChangedData(QString)));
 

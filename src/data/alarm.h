@@ -4,10 +4,10 @@
 #include <QObject>
 #include "data.h"
 
-class alarm: public Data{
+class Alarm: public Data{
         Q_OBJECT
 public:
-        alarm();
+        Alarm();
         int getLowWaterflow();
         int getFanBlocked();
         int getOverTemperatur();
@@ -19,6 +19,9 @@ public slots:
         void setLowWaterflow(int value);
         void setFanBlocked(int value);
         void setOverTemperatur(int value);
+        void setLowWaterflow(bool value);
+        void setFanBlocked(bool value);
+        void setOverTemperatur(bool value);
         void ProcessData(Carriage *car); // Parant Member überladen
 };
 

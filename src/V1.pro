@@ -14,6 +14,8 @@ TEMPLATE = app
 CONFIG += c++11
 QT += uitools
 
+CONFIG += static
+
 include(qextserialport/src/qextserialport.pri)
 
 

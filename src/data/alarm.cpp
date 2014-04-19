@@ -1,35 +1,47 @@
 #include "alarm.h"
 
-alarm::alarm() : Data(){
+Alarm::Alarm() : Data(){
 
 }
 
 
-int alarm::getFanBlocked(){
+int Alarm::getFanBlocked(){
     return fanBlocked.value;
 }
 
-void alarm::setFanBlocked(int value){
+void Alarm::setFanBlocked(int value){
     SetValue(&fanBlocked ,value);
 }
 
-int alarm::getLowWaterflow(){
+void Alarm::setFanBlocked(bool value){
+    this->setFanBlocked((int)value);
+}
+
+int Alarm::getLowWaterflow(){
     return lowWaterflow.value;
 }
 
-void alarm::setLowWaterflow(int value){
+void Alarm::setLowWaterflow(int value){
     SetValue(&lowWaterflow ,value);
 }
 
-int alarm::getOverTemperatur(){
+void Alarm::setLowWaterflow(bool value){
+    this->setLowWaterflow((int)value);
+}
+
+int Alarm::getOverTemperatur(){
     return overTemperatur.value;
 }
 
-void alarm::setOverTemperatur(int value){
+void Alarm::setOverTemperatur(int value){
     SetValue(&overTemperatur ,value);
 }
 
-void alarm::ProcessData(Carriage *car){
+void Alarm::setOverTemperatur(bool value){
+    this->setOverTemperatur((int)value);
+}
+
+void Alarm::ProcessData(Carriage *car){
     if(car->getId() == 50){
         switch(car->getIndex()){
             case 1:

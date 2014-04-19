@@ -18,6 +18,7 @@
 #include "data/rechner.h"
 #include "data/led.h"
 #include "data/lcd.h"
+#include "data/alarm.h"
 
 /*
  *
@@ -54,6 +55,7 @@ class ConflictCore : public QObject{
         Led led;
         Lcd lcd;
         Dfm dfm;
+        Alarm alarm;
         Kanal kanal[4];
 
 

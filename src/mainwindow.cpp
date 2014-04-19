@@ -44,30 +44,40 @@ MainWindow::~MainWindow(){
 }
 
 void MainWindow::connectCore(ConflictCore* core){
+
     QObject::connect (core, SIGNAL(debugOutput(QString)), this, SLOT(debugConsole(QString)));
+
     QObject::connect (core, SIGNAL(Changed(ConflictCore*,QString)), this, SLOT(updateGui(ConflictCore*,QString)));
 
-    QObject::connect(ui->ledColorGreen, SIGNAL(sliderMoved(int)),&core->led, SLOT(setGreen(int)));
-    QObject::connect(ui->ledColorRed, SIGNAL(valueChanged(int)),&core->led, SLOT(setRed(int)));
-    QObject::connect(ui->ledColorBlue, SIGNAL(valueChanged(int)),&core->led, SLOT(setBlue(int)));
-    QObject::connect(ui->ledModus, SIGNAL(currentIndexChanged(int)),&core->led, SLOT(setMode(int)));
     QObject::connect(&core->led,&Led::Changed,[=]() { ui->ledColorRed->setValue(core->led.getRed());
                                                       ui->ledColorGreen->setValue(core->led.getGreen());
                                                       ui->ledColorBlue->setValue(core->led.getBlue());
                                                       ui->ledModus->setCurrentIndex(core->led.getMode());
                                                     });
+    QObject::connect(&core->alarm,&Alarm::Changed,[=](){ ui->optionenAlarmDurchfluss->setChecked((bool)core->alarm.getLowWaterflow());
+                                                         ui->optionenAlarmLuefter->setChecked((bool)core->alarm.getFanBlocked());
+                                                         ui->optionenAlarmTemperatur->setChecked((bool)core->alarm.getOverTemperatur());
+                                                    });
+    QObject::connect(&core->dfm,&Dfm::Changed,[=]() { ui->optionenDfmImpulse->setValue(core->dfm.getPulsePerLiter());
+                                                      ui->optionenAlarmMinDurchfluss->setValue(core->dfm.getMinFlow());
+                                                      // show
+                                                    });
+
+    QObject::connect(ui->ledColorGreen, SIGNAL(sliderMoved(int)),&core->led, SLOT(setGreen(int)));
+    QObject::connect(ui->ledColorRed, SIGNAL(valueChanged(int)),&core->led, SLOT(setRed(int)));
+    QObject::connect(ui->ledColorBlue, SIGNAL(valueChanged(int)),&core->led, SLOT(setBlue(int)));
+    QObject::connect(ui->ledModus, SIGNAL(currentIndexChanged(int)),&core->led, SLOT(setMode(int)));
 
     QObject::connect(ui->optionenAnzeigeBeleuchtung, SIGNAL(valueChanged(int)),&core->lcd, SLOT(setBacklight(int)));
     QObject::connect(ui->optionenAnzeigeKontrast, SIGNAL(valueChanged(int)),&core->lcd, SLOT(setContrast(int)));
 
     QObject::connect(ui->optionenDfmImpulse, SIGNAL(valueChanged(int)),&core->dfm, SLOT(setPulsePerLiter(int)));
-    QObject::connect(ui->optionenAlarmMinDurchfluss, SIGNAL(valueChanged(int)),&core->dfm, SLOT(setMinFlow(int)));
 
-    QObject::connect(&core->dfm,&Dfm::Changed,[=]() { ui->optionenDfmImpulse->setValue(core->dfm.getPulsePerLiter());
-                                                      ui->optionenAlarmMinDurchfluss->setValue(core->dfm.getMinFlow());
-                                                      // show
-                                                    });
     QObject::connect(ui->optionenAlarmMinDurchfluss, SIGNAL(valueChanged(int)),&core->dfm, SLOT(setMinFlow(int)));
+    QObject::connect(ui->optionenAlarmLuefter, SIGNAL(clicked(bool)),&core->alarm, SLOT(setFanBlocked(bool)));
+    QObject::connect(ui->optionenAlarmTemperatur, SIGNAL(clicked(bool)),&core->alarm, SLOT(setOverTemperatur(bool)));
+    QObject::connect(ui->optionenAlarmDurchfluss, SIGNAL(clicked(bool)),&core->alarm, SLOT(setLowWaterflow(bool)));
+
     QObject::connect(ui->kanalSpeichern,SIGNAL(clicked()),this, SLOT(speicherKanal()));
     QObject::connect(ui->kanalAktiv,SIGNAL(currentIndexChanged(int)),this, SLOT(updateTabKanaele(int)));
     QObject::connect(ui->kanalGrenzwert,SIGNAL(currentIndexChanged(int)),this, SLOT(updateTabKanaeleGrenzwert(int)));
@@ -108,26 +118,26 @@ void MainWindow::updateGui(ConflictCore* core,QString dataClass){
             ui->console->append(QString("updateGui LED"));
          }else if (dataClass == QString("kanal1")){
              //qDebug() << "kanal1";
-             this->updateTabKanaele(1);
+             this->updateTabKanaele(0);
             //ui->infoKanal1RPM->setText(QString::number(core->kanal[0].getRpm()));
          }else if (dataClass == QString("kanal2")){
              //qDebug() << "kanal2";
-             this->updateTabKanaele(2);
+             this->updateTabKanaele(1);
             //ui->infoKanal2RPM->setText(QString::number(core->kanal[1].getRpm()));
          }else if (dataClass == QString("kanal3")){
              //qDebug() << "kanal3";
-             this->updateTabKanaele(3);
+             this->updateTabKanaele(2);
             //ui->infoKanal3RPM->setText(QString::number(core->kanal[2].getRpm()));
          }else if (dataClass == QString("kanal4")){
              //qDebug() << "kanal4";
-             this->updateTabKanaele(4);
+             this->updateTabKanaele(3);
             //ui->infoKanal3RPM->setText(QString::number(core->kanal[2].getRpm()));
          }
     }
 }
 
 void MainWindow::updateTabKanaele(int kanal){
-    if(kanal == (ui->kanalAktiv->currentIndex() + 1)){
+    if(kanal == (ui->kanalAktiv->currentIndex())){
         qDebug() << "kanalTabUpdate" << ui->kanalAktiv->currentIndex() << kanal;
         Kanal* k = &aktivCore->kanal[ui->kanalAktiv->currentIndex()];
         ui->kanalAutoOn->setChecked((bool)k->getAutoMode());
@@ -137,6 +147,8 @@ void MainWindow::updateTabKanaele(int kanal){
         ui->KanalManuellPower->setValue(k->getManualPower());
         ui->KanalStartupTime->setValue(k->getStartupTime());
         this->updateTabKanaeleGrenzwert(ui->kanalGrenzwert->currentIndex());
+    }else{
+        qDebug() << "woot";
     }
 }
 
@@ -190,6 +202,7 @@ void  MainWindow::speicherKanal(){
     k->setStopEnabled((int) ui->kanalAutoCanStop->isChecked());
     k->setThreshold(ui->kanalAutoStart->value());
     k->enableChanged();
+    updateTabKanaeleGrenzwert(index);
 }
 
 
