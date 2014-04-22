@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     data/lcd.cpp \
     data/led.cpp \
     data/rechner.cpp \
-    data/alarm.cpp
+    data/alarm.cpp \
+    config.cpp
 
 HEADERS  += fetchThread.h \
     mainwindow.h \
@@ -47,7 +48,8 @@ HEADERS  += fetchThread.h \
     data/lcd.h \
     data/led.h \
     data/rechner.h \
-    data/alarm.h
+    data/alarm.h \
+    config.h
 
 
 FORMS    += \
