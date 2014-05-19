@@ -64,6 +64,9 @@ void Data::SetValue (intValue *ptr, int value, QString option){
         }else if(option == DATA_FROM_HW){
             emitChanged();
             qDebug() << "DATA_FROM_HW";
+        }else if(option == DATA_FROM_GUI){
+            emit PushToHw(new Carriage(0,ptr->car.getId(), ptr->car.getIndex(), ptr->car.getData())); // eigentlich sollte emit PushToHw(ptr->car) ja reichen... aber funzt ned.
+            qDebug() << "DATA_FROM_GUI" << "OLD:" << oldStr->toLatin1() << "NEW:" << newValue;
         }
     }
 }

@@ -50,8 +50,8 @@ void ConflictCore::connectInterface(QString str){
         this->interfaceOpen = true;
         this->printDebug(QString("Interface Open"));
         this->printDebug(QString("Sync Data"));
-        Carriage *car = new Carriage(1,0,0,0);
-        this->sendCarriage(car);
+
+        this->initHW();
     }
 }
 
@@ -63,10 +63,19 @@ void ConflictCore::disconnect(){
     this->interface = NULL;
 }
 
-void ConflictCore::restart(){
+void ConflictCore::restartHW(){
     this->printDebug(QString("restart"));
     interface->SendString((new Carriage(0,1,170,85))->toString());
 }
+
+void ConflictCore::initHW(){
+    this->printDebug(QString("init"));
+    Carriage *car = new Carriage(1,2,2,0);
+    this->sendCarriage(car); // fire and forget. die Conflict erkennt die erste Anfrage meist nicht.
+    car->set(1,0,0,0);
+    this->sendCarriage(car);
+}
+
 
 void ConflictCore::ChangedData(QString str){
     this->printDebug(QString("Changed - ") + str);
@@ -78,7 +87,12 @@ void ConflictCore::ChangedData(QString str){
 // Interface Signale -> Core Slot -> Core Signal -> DataClasses Slots.
 void ConflictCore::rcvCarriage(Carriage *car){
     //this->printDebug(QString("Carriage - ") + car->toString());
-    emit this->newCarriage(car);
+    if(car->getId() != 0x00){
+        emit this->newCarriage(car);
+    }else if(car->getIndex() == 0x01){
+        // init beendet
+        emit initComplete();
+    }
 }
 
 void ConflictCore::sendCarriage(Carriage *car){

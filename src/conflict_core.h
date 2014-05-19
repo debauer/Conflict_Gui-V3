@@ -65,11 +65,13 @@ class ConflictCore : public QObject{
         void printDebug(QString);
         void rcvCarriage(Carriage *car); //
     public slots:
-        void restart(); //
+        void restartHW(); //
         void ChangedData(QString str); // Akkregator der Changed Signale von Daten Klassen. Emittet ebenfalls Changed()
         void sendCarriage(Carriage *car); //
+        void initHW();
     signals:
         void Changed(ConflictCore* core, QString str);
+        void initComplete();
         void newCarriage(Carriage *car);
         void debugOutput(QString  str);
         void syncData();

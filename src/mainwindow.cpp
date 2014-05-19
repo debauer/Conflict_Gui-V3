@@ -13,10 +13,11 @@
 PortSettings portSettings;
 QList<QextPortInfo> serialPorts;
 QextSerialPort *SerialPort;
+int init = false;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow){
     int i;
-
+    guiStatus = STATUS_NO_CONNECTION;
     ui->setupUi(this);
 
     /* Serial Menü*/
@@ -33,6 +34,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     QObject::connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(newCoreSerial(int)));
 
+    QObject::connect (ui->actionTrennen, SIGNAL(triggered()), this, SLOT(dropCoreSerial()));
+    QObject::connect (ui->actionBeenden, SIGNAL(triggered()), this, SLOT(close()));
+    QObject::connect (ui->actionNeustart, SIGNAL(triggered()), this, SLOT(conflictRestart()));
+    QObject::connect (ui->actionInitialisierung, SIGNAL(triggered()), this, SLOT(conflictInit()));
 
     /* ETH Menü */
 
@@ -48,6 +53,8 @@ void MainWindow::connectCore(ConflictCore* core){
     QObject::connect (core, SIGNAL(debugOutput(QString)), this, SLOT(debugConsole(QString)));
 
     QObject::connect (core, SIGNAL(Changed(ConflictCore*,QString)), this, SLOT(updateGui(ConflictCore*,QString)));
+
+    QObject::connect (core, SIGNAL(initComplete()), this, SLOT(initComplete()));
 
     QObject::connect(&core->led,&Led::Changed,[=]() { ui->ledColorRed->setValue(core->led.getRed());
                                                       ui->ledColorGreen->setValue(core->led.getGreen());
@@ -81,12 +88,38 @@ void MainWindow::connectCore(ConflictCore* core){
     QObject::connect(ui->kanalSpeichern,SIGNAL(clicked()),this, SLOT(speicherKanal()));
     QObject::connect(ui->kanalAktiv,SIGNAL(currentIndexChanged(int)),this, SLOT(updateTabKanaele(int)));
     QObject::connect(ui->kanalGrenzwert,SIGNAL(currentIndexChanged(int)),this, SLOT(updateTabKanaeleGrenzwert(int)));
+
+    ui->menuVerbinden->setEnabled(false);
+    ui->actionNeustart->setEnabled(true);
+    ui->actionTrennen->setEnabled(false);
+    //ui->actionSpeichern->setEnabled(true);
+    ui->actionInitialisierung->setEnabled(true);
+
 }
 
+void MainWindow::dropCoreSerial(){
+    disconnectCore(aktivCore);
+    delete aktivCore;
+    this->aktivCore = NULL;
+    ui->menuVerbinden->setEnabled(true);
+    ui->actionNeustart->setEnabled(false);
+    ui->actionTrennen->setEnabled(false);
+    //ui->actionSpeichern->setEnabled(false);
+    ui->actionInitialisierung->setEnabled(false);
+}
+
+void MainWindow::conflictInit(){
+    aktivCore->initHW();
+}
+
+void MainWindow::conflictRestart(){
+    aktivCore->restartHW();
+}
+
+
 void MainWindow::disconnectCore(ConflictCore* core){
-
+    guiStatus = STATUS_NO_CONNECTION;
     QObject::disconnect(core,0,this,0); // alle signals des Cores an mainwindow disconnecten
-
     QObject::disconnect(&core->led,0);
 }
 
@@ -97,17 +130,26 @@ ConflictCore* MainWindow::newCore(){
 }\
 
 void MainWindow::newCoreSerial(int serId){
+     guiStatus = STATUS_INIT;
      ConflictCore *core = this->newCore();
      core->connectSerial(serId);
      this->aktivCore = core;
      //ConflictWidget *conflictWidget = new ConflictWidget();
      //Ui::ConflictWidget *conflictUi = conflictWidget->getObject();
      //ui->Tabs->addTab(conflictWidget,QString(""));
+
 }
 
 void MainWindow::newCoreETH(QString ip){
      ConflictCore *core = this->newCore();
      core->connectETH(ip);
+
+}
+
+void MainWindow::initComplete(){
+     guiStatus = STATUS_OK;
+     qDebug() << "INIT COMPLETE";
+     this->updateTabKanaele();
 }
 
 /* Haupt Update Worker */
@@ -118,22 +160,29 @@ void MainWindow::updateGui(ConflictCore* core,QString dataClass){
             ui->console->append(QString("updateGui LED"));
          }else if (dataClass == QString("kanal1")){
              //qDebug() << "kanal1";
-             this->updateTabKanaele(0);
+             //this->updateTabKanaele(0);
             //ui->infoKanal1RPM->setText(QString::number(core->kanal[0].getRpm()));
          }else if (dataClass == QString("kanal2")){
              //qDebug() << "kanal2";
-             this->updateTabKanaele(1);
+             //this->updateTabKanaele(1);
             //ui->infoKanal2RPM->setText(QString::number(core->kanal[1].getRpm()));
          }else if (dataClass == QString("kanal3")){
              //qDebug() << "kanal3";
-             this->updateTabKanaele(2);
+             //this->updateTabKanaele(2);
             //ui->infoKanal3RPM->setText(QString::number(core->kanal[2].getRpm()));
          }else if (dataClass == QString("kanal4")){
              //qDebug() << "kanal4";
-             this->updateTabKanaele(3);
+             //this->updateTabKanaele(3);
             //ui->infoKanal3RPM->setText(QString::number(core->kanal[2].getRpm()));
          }
     }
+}
+
+void MainWindow::updateTabKanaele(){
+    this->updateTabKanaele(0);
+    this->updateTabKanaele(1);
+    this->updateTabKanaele(2);
+    this->updateTabKanaele(3);
 }
 
 void MainWindow::updateTabKanaele(int kanal){
