@@ -16,7 +16,7 @@ QextSerialPort *SerialPort;
 int init = false;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow){
-    int i;
+    int i,j,k;
     guiStatus = STATUS_NO_CONNECTION;
     ui->setupUi(this);
 
@@ -42,6 +42,58 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     /* ETH Menü */
 
     /* sonstiges Connects */
+
+    // generate some data:
+    QVector<double> x(101), y(101); // initialize with entries 0..100
+    for (int i=0; i<101; ++i)
+    {
+      x[i] = i/50.0 - 1; // x goes from -1 to 1
+      y[i] = x[i]*x[i]; // let's plot a quadratic function
+    }
+    // create graph and assign data to it:
+    ui->customPlot->addGraph();
+    ui->customPlot->graph(0)->setData(x, y);
+    // give the axes some labels:
+    ui->customPlot->xAxis->setLabel("x");
+    ui->customPlot->yAxis->setLabel("y");
+    // set axes ranges, so we see all data:
+    ui->customPlot->xAxis->setRange(-1, 1);
+    ui->customPlot->yAxis->setRange(0, 1);
+    ui->customPlot->replot();
+
+    j = 0;
+    k = 0;
+    for(i = 0; i<28; i++){
+        dashBox[i].setLayout(new QGridLayout());
+        dashBox[i].layout()->addWidget(&dashProgressBar[i]);
+        dashLayout.addWidget(&dashBox[i],k,j);
+        if(j == dashPerRow){
+            j = 0;
+            k++;
+        }else{
+            j++;
+        }
+        dashProgressBar[i].setValue(33);
+        dashProgressBar[i].setStyleSheet(QString("QProgressBar{border: 2px solid grey;border-radius: 5px;text-align: center;} QProgressBar::chunk{background-color: #FB4400;width: 2.15px;margin: 0.5px;}"));
+        dashProgressBar[i].setFormat(QString("%v C°"));
+        dashBox[i].setTitle(QString("Temperatur ") + QString::number(i+1-4));
+    }
+
+    dashProgressBar[0].setMaximum(9999);
+    dashProgressBar[1].setMaximum(9999);
+    dashProgressBar[2].setMaximum(9999);
+    dashProgressBar[3].setMaximum(999);
+    dashProgressBar[0].setValue(1000);
+    dashProgressBar[0].setFormat(QString("%v rpm"));
+    dashProgressBar[1].setFormat(QString("%v rpm"));
+    dashProgressBar[2].setFormat(QString("%v rpm"));
+    dashProgressBar[3].setFormat(QString("%v l/h"));
+    dashBox[0].setTitle(QString("Kanal 1"));
+    dashBox[1].setTitle(QString("Kanal 2"));
+    dashBox[2].setTitle(QString("Kanal 3"));
+    dashBox[3].setTitle(QString("DFM"));
+    ui->scrollArea->setLayout(&dashLayout);
+
 }
 
 MainWindow::~MainWindow(){
@@ -49,26 +101,46 @@ MainWindow::~MainWindow(){
 }
 
 void MainWindow::connectCore(ConflictCore* core){
+    int i;
+    // CORE -> GUI Connects
 
     QObject::connect (core, SIGNAL(debugOutput(QString)), this, SLOT(debugConsole(QString)));
 
-    QObject::connect (core, SIGNAL(Changed(ConflictCore*,QString)), this, SLOT(updateGui(ConflictCore*,QString)));
+    //QObject::connect (core, SIGNAL(Changed(ConflictCore*,QString)), this, SLOT(updateGui(ConflictCore*,QString)));
 
     QObject::connect (core, SIGNAL(initComplete()), this, SLOT(initComplete()));
 
-    QObject::connect(&core->led,&Led::Changed,[=]() { ui->ledColorRed->setValue(core->led.getRed());
-                                                      ui->ledColorGreen->setValue(core->led.getGreen());
-                                                      ui->ledColorBlue->setValue(core->led.getBlue());
-                                                      ui->ledModus->setCurrentIndex(core->led.getMode());
-                                                    });
-    QObject::connect(&core->alarm,&Alarm::Changed,[=](){ ui->optionenAlarmDurchfluss->setChecked((bool)core->alarm.getLowWaterflow());
-                                                         ui->optionenAlarmLuefter->setChecked((bool)core->alarm.getFanBlocked());
-                                                         ui->optionenAlarmTemperatur->setChecked((bool)core->alarm.getOverTemperatur());
-                                                    });
-    QObject::connect(&core->dfm,&Dfm::Changed,[=]() { ui->optionenDfmImpulse->setValue(core->dfm.getPulsePerLiter());
-                                                      ui->optionenAlarmMinDurchfluss->setValue(core->dfm.getMinFlow());
-                                                      // show
-                                                    });
+    QObject::connect(&core->led,&Led::HardwareChanged,[=](int type){
+        // Immer TYPE_SETUP
+        ui->ledColorRed->setValue(core->led.getRed());
+        ui->ledColorGreen->setValue(core->led.getGreen());
+        ui->ledColorBlue->setValue(core->led.getBlue());
+        ui->ledModus->setCurrentIndex(core->led.getMode());
+    });
+    QObject::connect(&core->alarm,&Alarm::HardwareChanged,[=](int type){
+        // Immer TYPE_ALARM
+        ui->optionenAlarmDurchfluss->setChecked((bool)core->alarm.getLowWaterflow());
+        ui->optionenAlarmLuefter->setChecked((bool)core->alarm.getFanBlocked());
+        ui->optionenAlarmTemperatur->setChecked((bool)core->alarm.getOverTemperatur());
+    });
+    QObject::connect(&core->dfm,&Dfm::HardwareChanged,[=](int type){
+        if(type == TYPE_VALUE){
+            dashProgressBar[3].setValue(core->dfm.getWaterFlow());
+        }else if(type == TYPE_SETUP){
+            ui->optionenDfmImpulse->setValue(core->dfm.getPulsePerLiter());
+            ui->optionenAlarmMinDurchfluss->setValue(core->dfm.getMinFlow());
+        }
+    });
+    for(i=0;i<3;i++){
+        QObject::connect(&core->kanal[i],&Kanal::HardwareChanged,[=](int type){
+            if(type == TYPE_VALUE){
+                dashProgressBar[i].setValue(core->kanal[i].getRpm());
+            }else if(type == TYPE_SETUP){
+            }
+        });
+    }
+
+    // GUI -> Core Connects
 
     QObject::connect(ui->ledColorGreen, SIGNAL(sliderMoved(int)),&core->led, SLOT(setGreen(int)));
     QObject::connect(ui->ledColorRed, SIGNAL(valueChanged(int)),&core->led, SLOT(setRed(int)));
@@ -215,7 +287,7 @@ void MainWindow::updateTabKanaeleGrenzwert(int kanal){
 void  MainWindow::speicherKanal(){
     int index = ui->kanalAktiv->currentIndex();
     Kanal* k = &aktivCore->kanal[index];
-    k->disbaleChanged();
+    k->disableChanged();
     k->setAutoMode(ui->kanalAutoOn->isChecked()?1:0);
     k->setManualPower(ui->KanalManuellPower->value());
     if(ui->KanalGrenzwertMaxAktiv->isChecked()){

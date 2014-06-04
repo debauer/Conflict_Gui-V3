@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = V1
 TEMPLATE = app
@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     data/led.cpp \
     data/rechner.cpp \
     data/alarm.cpp \
-    config.cpp
+    config.cpp \
+    qcustomplot/qcustomplot.cpp
 
 HEADERS  += fetchThread.h \
     mainwindow.h \
@@ -49,11 +50,11 @@ HEADERS  += fetchThread.h \
     data/led.h \
     data/rechner.h \
     data/alarm.h \
-    config.h
+    config.h \
+    qcustomplot/qcustomplot.h
 
 
 FORMS    += \
-    conflictwidget.ui \
     mainwindow.ui
 
 OTHER_FILES +=

@@ -19,6 +19,25 @@
  *
  */
 
+/*
+ * 04.06.2014
+ * Einführung von valueChanged Typen. Einfluss auf Signals und Datenfluss.
+ *
+ * 0 - gangbang
+ * 1 - setup Daten
+ * 2 - Messwerte
+ * 3 -
+ *
+ */
+
+#define TYPE_VOID   0
+#define TYPE_SETUP  1
+#define TYPE_VALUE  2
+#define TYPE_INFO   3
+#define TYPE_SYSTEM 4
+#define TYPE_ALARM 4
+
+
 #define DATA_FROM_HW QString("fromHW")
 #define DATA_FROM_GUI QString("fromGui")
 #define DATA_DEFAULT QString("default")
@@ -32,13 +51,15 @@ protected:
 public:
     void SetValue (intValue (*ptr), int value); // möglichst nicht überschreiben!
     void SetValue (intValue (*ptr), int value, QString option);
-    void disbaleChanged();
+    void disableChanged();
     void enableChanged();
-    void emitChanged();
+    void emitChanged();             // Wrapper um changed zu deaktivieren.
     void setId(int id);
     Data();
 signals:
     void Changed();                 // Signal für GUI das sich das Modell geändert hat und die View geupdatet werden soll
+    void HardwareChanged(int type);
+    void GuiChanged(int type);
     void PushToHw(Carriage *car);   // Schieb den Carriage zur HW.
 public slots:
     void RequestData();

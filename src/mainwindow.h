@@ -6,10 +6,14 @@
 #include "QObject"
 
 #include "carriage.h"
+#include "data/data.h"
 
 #include "qextserialport.h"
 #include "qextserialenumerator.h"
 #include "QSignalMapper"
+#include "QGridLayout"
+#include "QProgressBar"
+#include "QGroupBox"
 #include "conflict_core.h"
 
 #define STATUS_NO_CONNECTION QString("no connection")
@@ -40,6 +44,11 @@ private:
     void disconnectCore(ConflictCore* core);
     QString guiStatus;
     QSignalMapper* signalMapper;
+    QGridLayout dashLayout;
+    QGroupBox dashBox[28];
+    QProgressBar dashProgressBar[28];
+    int dashPerRow = 3;
+
 
 
 public slots:

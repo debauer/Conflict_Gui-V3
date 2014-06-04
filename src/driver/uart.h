@@ -27,7 +27,7 @@ class Uart : public QObject, public AbsInterface{
         serialStruct serial;
         QTimer *timer;
         QStack<QString> txStack;
-        int timerInterval = 10;
+        int timerInterval = 15;
         int popped = 0;
         int pushed = 0;
     public slots:

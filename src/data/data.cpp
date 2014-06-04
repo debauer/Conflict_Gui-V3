@@ -63,15 +63,17 @@ void Data::SetValue (intValue *ptr, int value, QString option){
             qDebug() << "DATA_DEFAULT" << "OLD:" << oldStr->toLatin1() << "NEW:" << newValue;
         }else if(option == DATA_FROM_HW){
             emitChanged();
+            emit HardwareChanged(ptr->type);
             qDebug() << "DATA_FROM_HW";
         }else if(option == DATA_FROM_GUI){
+            emit GuiChanged(ptr->type);
             emit PushToHw(new Carriage(0,ptr->car.getId(), ptr->car.getIndex(), ptr->car.getData())); // eigentlich sollte emit PushToHw(ptr->car) ja reichen... aber funzt ned.
             qDebug() << "DATA_FROM_GUI" << "OLD:" << oldStr->toLatin1() << "NEW:" << newValue;
         }
     }
 }
 
-void Data::disbaleChanged(){
+void Data::disableChanged(){
     changedAktiv = false;
 }
 

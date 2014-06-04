@@ -7,11 +7,13 @@ Kanal::Kanal() : Data(){
         maxTemp[i].max = 255;
         maxTemp[i].min = 0;
         maxTemp[i].value = 255;
+        maxTemp[i].type = TYPE_SETUP;
         maxTemp[i].car.setIndex(i+1);
 
         minTemp[i].max = 255;
         minTemp[i].min = 0;
         minTemp[i].value = 250;
+        minTemp[i].type = TYPE_SETUP;
         minTemp[i].car.setIndex(i+1);
     }
     static int maxId = 0;

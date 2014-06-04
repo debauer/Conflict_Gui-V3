@@ -6,6 +6,7 @@ Lcd::Lcd() : Data(){
         content[i].max = 255;
         content[i].min = 0;
         content[i].value = 0;
+        content[i].type = TYPE_SETUP;
         content[i].car.setIndex(i+1);
         content[i].car.setId(80);
     }
@@ -13,6 +14,7 @@ Lcd::Lcd() : Data(){
         screens[i].max = 255;
         screens[i].min = 0;
         screens[i].value = 0;
+        screens[i].type = TYPE_SETUP;
         screens[i].car.setIndex(i+1);
         screens[i].car.setId(81);
     }
