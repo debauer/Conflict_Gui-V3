@@ -12,9 +12,11 @@ public:
         int getFanBlocked();
         int getOverTemperatur();
 private:
-        intValue overTemperatur = {0,0,1,TYPE_ALARM,Carriage(0,50,1,0)};
-        intValue fanBlocked     = {0,0,1,TYPE_ALARM,Carriage(0,50,2,0)};
-        intValue lowWaterflow   = {0,0,1,TYPE_ALARM,Carriage(0,50,3,0)};
+        intValue overTemperatur         = {0,0,1,TYPE_ALARM,Carriage(0,50,1,0)};
+        intValue fanBlocked             = {0,0,1,TYPE_ALARM,Carriage(0,50,2,0)};
+        intValue lowWaterflow           = {0,0,1,TYPE_ALARM,Carriage(0,50,3,0)};
+        intValue enableOverTemperatur   = {0,0,1,TYPE_SETUP,Carriage(0,51,1,0)};
+        intValue enableFanBlocked       = {0,0,1,TYPE_SETUP,Carriage(0,51,2,0)};
 public slots:
         void setLowWaterflow(int value);
         void setFanBlocked(int value);

@@ -53,47 +53,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     // create graph and assign data to it:
     ui->customPlot->addGraph();
     ui->customPlot->graph(0)->setData(x, y);
+    ui->customPlot->graph(0)->setLineStyle(QCPGraph::lsLine );
+    ui->customPlot->graph(0)->setScatterStyle(QCPScatterStyle::ssNone);
     // give the axes some labels:
-    ui->customPlot->xAxis->setLabel("x");
-    ui->customPlot->yAxis->setLabel("y");
+    ui->customPlot->xAxis->setLabel("Minuten");
+    ui->customPlot->yAxis->setLabel("C°");
     // set axes ranges, so we see all data:
-    ui->customPlot->xAxis->setRange(-1, 1);
+    ui->customPlot->xAxis->setRange(1, 0);
     ui->customPlot->yAxis->setRange(0, 1);
     ui->customPlot->replot();
-
-    j = 0;
-    k = 0;
-    for(i = 0; i<28; i++){
-        dashBox[i].setLayout(new QGridLayout());
-        dashBox[i].layout()->addWidget(&dashProgressBar[i]);
-        dashLayout.addWidget(&dashBox[i],k,j);
-        if(j == dashPerRow){
-            j = 0;
-            k++;
-        }else{
-            j++;
-        }
-        dashProgressBar[i].setValue(33);
-        dashProgressBar[i].setStyleSheet(QString("QProgressBar{border: 2px solid grey;border-radius: 5px;text-align: center;} QProgressBar::chunk{background-color: #FB4400;width: 2.15px;margin: 0.5px;}"));
-        dashProgressBar[i].setFormat(QString("%v C°"));
-        dashBox[i].setTitle(QString("Temperatur ") + QString::number(i+1-4));
-    }
-
-    dashProgressBar[0].setMaximum(9999);
-    dashProgressBar[1].setMaximum(9999);
-    dashProgressBar[2].setMaximum(9999);
-    dashProgressBar[3].setMaximum(999);
-    dashProgressBar[0].setValue(1000);
-    dashProgressBar[0].setFormat(QString("%v rpm"));
-    dashProgressBar[1].setFormat(QString("%v rpm"));
-    dashProgressBar[2].setFormat(QString("%v rpm"));
-    dashProgressBar[3].setFormat(QString("%v l/h"));
-    dashBox[0].setTitle(QString("Kanal 1"));
-    dashBox[1].setTitle(QString("Kanal 2"));
-    dashBox[2].setTitle(QString("Kanal 3"));
-    dashBox[3].setTitle(QString("DFM"));
-    ui->scrollArea->setLayout(&dashLayout);
-
+    this->drawDashboard();
 }
 
 MainWindow::~MainWindow(){
@@ -117,15 +86,23 @@ void MainWindow::connectCore(ConflictCore* core){
         ui->ledColorBlue->setValue(core->led.getBlue());
         ui->ledModus->setCurrentIndex(core->led.getMode());
     });
+
+    QObject::connect(&core->lcd,&Lcd::HardwareChanged,[=](int type){
+        // Immer TYPE_SETUP
+        ui->optionenAnzeigeBeleuchtung->setValue(core->lcd.getBacklight());
+        ui->optionenAnzeigeKontrast->setValue(core->lcd.getContrast());
+        //ui->optionenAnzeige->setValue(core->lcd.getContrast());
+    });
+
     QObject::connect(&core->alarm,&Alarm::HardwareChanged,[=](int type){
         // Immer TYPE_ALARM
-        ui->optionenAlarmDurchfluss->setChecked((bool)core->alarm.getLowWaterflow());
+        //ui->optionenAlarmDurchfluss->setChecked((bool)core->alarm.getLowWaterflow());
         ui->optionenAlarmLuefter->setChecked((bool)core->alarm.getFanBlocked());
         ui->optionenAlarmTemperatur->setChecked((bool)core->alarm.getOverTemperatur());
     });
     QObject::connect(&core->dfm,&Dfm::HardwareChanged,[=](int type){
         if(type == TYPE_VALUE){
-            dashProgressBar[3].setValue(core->dfm.getWaterFlow());
+            dashWidgets[3].progressBar.setValue(core->dfm.getWaterFlow());
         }else if(type == TYPE_SETUP){
             ui->optionenDfmImpulse->setValue(core->dfm.getPulsePerLiter());
             ui->optionenAlarmMinDurchfluss->setValue(core->dfm.getMinFlow());
@@ -134,11 +111,29 @@ void MainWindow::connectCore(ConflictCore* core){
     for(i=0;i<3;i++){
         QObject::connect(&core->kanal[i],&Kanal::HardwareChanged,[=](int type){
             if(type == TYPE_VALUE){
-                dashProgressBar[i].setValue(core->kanal[i].getRpm());
+                dashWidgets[i].progressBar.setValue(core->kanal[i].getRpm());
             }else if(type == TYPE_SETUP){
             }
         });
     }
+
+    for(i=0;i<24;i++){
+        QObject::connect(&core->temperatur[i],&Temperatur::HardwareChanged,[=](int type){
+            if(type == TYPE_VALUE){
+                dashWidgets[i+4].progressBar.setValue(core->temperatur[i].getWert());
+            }else if(type == TYPE_SETUP){
+                ui->oneWireId1->setText(core->temperatur[0].getOneWireId());
+                ui->oneWireId2->setText(core->temperatur[1].getOneWireId());
+                ui->oneWireId3->setText(core->temperatur[2].getOneWireId());
+                ui->oneWireId4->setText(core->temperatur[3].getOneWireId());
+                ui->oneWireId5->setText(core->temperatur[4].getOneWireId());
+                ui->oneWireId6->setText(core->temperatur[5].getOneWireId());
+                ui->oneWireId7->setText(core->temperatur[6].getOneWireId());
+                ui->oneWireId8->setText(core->temperatur[7].getOneWireId());
+            }
+        });
+    }
+
 
     // GUI -> Core Connects
 
@@ -155,7 +150,7 @@ void MainWindow::connectCore(ConflictCore* core){
     QObject::connect(ui->optionenAlarmMinDurchfluss, SIGNAL(valueChanged(int)),&core->dfm, SLOT(setMinFlow(int)));
     QObject::connect(ui->optionenAlarmLuefter, SIGNAL(clicked(bool)),&core->alarm, SLOT(setFanBlocked(bool)));
     QObject::connect(ui->optionenAlarmTemperatur, SIGNAL(clicked(bool)),&core->alarm, SLOT(setOverTemperatur(bool)));
-    QObject::connect(ui->optionenAlarmDurchfluss, SIGNAL(clicked(bool)),&core->alarm, SLOT(setLowWaterflow(bool)));
+    //QObject::connect(ui->optionenAlarmDurchfluss, SIGNAL(clicked(bool)),&core->alarm, SLOT(setLowWaterflow(bool)));
 
     QObject::connect(ui->kanalSpeichern,SIGNAL(clicked()),this, SLOT(speicherKanal()));
     QObject::connect(ui->kanalAktiv,SIGNAL(currentIndexChanged(int)),this, SLOT(updateTabKanaele(int)));
@@ -339,3 +334,46 @@ void MainWindow::debugConsole(QString str){
      ui->console->append(str);
 }
 
+
+
+void MainWindow::drawDashboard(){
+    int i,j,k;
+    // Bitch! init init init!
+    i = 0;
+    j = 0;
+    k = 0;
+    for(i = 0; i<28; i++){
+        dashWidgets[i].box.setLayout(new QGridLayout());
+        dashWidgets[i].box.layout()->addWidget(&dashWidgets[i].progressBar);
+        dashLayout.addWidget(&dashWidgets[i].box,k,j);
+        if(j == dashPerRow){
+            j = 0;
+            k++;
+        }else{
+            j++;
+        }
+        dashWidgets[i].progressBar.setMaximum(199);
+        dashWidgets[i].progressBar.setValue(dashWidgets[i].value);
+        dashWidgets[i].progressBar.setStyleSheet(STYLE_PB_OK);
+        dashWidgets[i].progressBar.setFormat(QString("%v C°"));
+        dashWidgets[i].box.setTitle(QString("Temperatur ") + QString::number(i+1-4));
+    }
+
+    dashWidgets[0].progressBar.setMaximum(9999);
+    dashWidgets[1].progressBar.setMaximum(9999);
+    dashWidgets[2].progressBar.setMaximum(9999);
+    dashWidgets[3].progressBar.setMaximum(999);
+    dashWidgets[0].progressBar.setFormat(QString("%v rpm"));
+    dashWidgets[1].progressBar.setFormat(QString("%v rpm"));
+    dashWidgets[2].progressBar.setFormat(QString("%v rpm"));
+    dashWidgets[3].progressBar.setFormat(QString("%v l/h"));
+    dashWidgets[0].box.setTitle(QString("Kanal 1"));
+    dashWidgets[1].box.setTitle(QString("Kanal 2"));
+    dashWidgets[2].box.setTitle(QString("Kanal 3"));
+    dashWidgets[3].box.setTitle(QString("Kanal 4 - DFM"));
+    ui->tabDash2->setLayout(&dashLayout);
+
+    //dashWidgets[13].progressBar.setStyleSheet(STYLE_PB_WARN);
+    //dashWidgets[14].progressBar.setStyleSheet(STYLE_PB_BAD);
+
+}

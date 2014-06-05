@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>581</width>
-    <height>400</height>
+    <width>601</width>
+    <height>370</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,138 +34,21 @@
      <number>6</number>
     </property>
     <item row="0" column="0">
-     <widget class="QTabWidget" name="Debug">
+     <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
-      <widget class="QWidget" name="tab_2">
+      <widget class="QWidget" name="tabDash2">
        <attribute name="title">
-        <string>Dash2</string>
+        <string>Dash</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_10">
-        <item row="0" column="0">
-         <widget class="QScrollArea" name="scrollArea">
-          <property name="widgetResizable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>545</width>
-             <height>303</height>
-            </rect>
-           </property>
-          </widget>
-         </widget>
-        </item>
-       </layout>
       </widget>
-      <widget class="QWidget" name="tabInfo">
+      <widget class="QWidget" name="tabPlot">
        <attribute name="title">
-        <string notr="true">Dash</string>
+        <string notr="true">Plot</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="3" column="1">
-         <widget class="QGroupBox" name="groupBox_12">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>50</height>
-           </size>
-          </property>
-          <property name="title">
-           <string>GroupBox</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_8">
-           <item row="0" column="0">
-            <widget class="QLCDNumber" name="lcdNumber">
-             <property name="styleSheet">
-              <string notr="true">QLCDNumber{
-    color: rgb(0,0,0);    
-}</string>
-             </property>
-             <property name="smallDecimalPoint">
-              <bool>false</bool>
-             </property>
-             <property name="digitCount">
-              <number>3</number>
-             </property>
-             <property name="mode">
-              <enum>QLCDNumber::Dec</enum>
-             </property>
-             <property name="segmentStyle">
-              <enum>QLCDNumber::Filled</enum>
-             </property>
-             <property name="intValue" stdset="0">
-              <number>99</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QGroupBox" name="groupBox_10">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>50</height>
-           </size>
-          </property>
-          <property name="title">
-           <string>Temperatur 1</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_6">
-           <item row="0" column="0">
-            <widget class="QProgressBar" name="progressBar">
-             <property name="styleSheet">
-              <string notr="true">QProgressBar
-{
-    border: 2px solid grey;
-    border-radius: 5px;
-    text-align: center;
-}
-
-QProgressBar::chunk
-{
-    background-color: #FB4400;
-    width: 2.15px;
-    margin: 0.5px;
-}</string>
-             </property>
-             <property name="value">
-              <number>24</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QGroupBox" name="groupBox_11">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>50</height>
-           </size>
-          </property>
-          <property name="title">
-           <string>Temperatur 2</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_7">
-           <item row="0" column="0">
-            <widget class="QProgressBar" name="progressBar_2">
-             <property name="value">
-              <number>24</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="4" column="0" colspan="2">
+        <item row="1" column="0" colspan="2">
          <widget class="QCustomPlot" name="customPlot" native="true">
           <property name="minimumSize">
            <size>
@@ -665,14 +548,14 @@ QProgressBar::chunk
            <item row="0" column="2">
             <widget class="QLabel" name="label_9">
              <property name="text">
-              <string>Temperatur 18</string>
+              <string>PC Temperatur 2</string>
              </property>
             </widget>
            </item>
            <item row="1" column="2">
             <widget class="QLabel" name="label_13">
              <property name="text">
-              <string>Temperatur 20</string>
+              <string>PC Temperatur 4</string>
              </property>
             </widget>
            </item>
@@ -682,7 +565,7 @@ QProgressBar::chunk
            <item row="0" column="0">
             <widget class="QLabel" name="label_8">
              <property name="text">
-              <string>Temperatur 17</string>
+              <string>PC Temperatur 1</string>
              </property>
             </widget>
            </item>
@@ -692,35 +575,35 @@ QProgressBar::chunk
            <item row="3" column="0">
             <widget class="QLabel" name="label_12">
              <property name="text">
-              <string>Temperatur 23</string>
+              <string>PC Temperatur 7</string>
              </property>
             </widget>
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_11">
              <property name="text">
-              <string>Temperatur 21</string>
+              <string>PC Temperatur 5</string>
              </property>
             </widget>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_10">
              <property name="text">
-              <string>Temperatur 19</string>
+              <string>PC Temperatur 3</string>
              </property>
             </widget>
            </item>
            <item row="2" column="2">
             <widget class="QLabel" name="label_14">
              <property name="text">
-              <string>Temperatur 22</string>
+              <string>PC Temperatur 6</string>
              </property>
             </widget>
            </item>
            <item row="3" column="2">
             <widget class="QLabel" name="label_15">
              <property name="text">
-              <string>Temperatur 24</string>
+              <string>PC Temperatur 8</string>
              </property>
             </widget>
            </item>
@@ -744,6 +627,140 @@ QProgressBar::chunk
            </item>
           </layout>
          </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QGroupBox" name="groupBox_10">
+          <property name="title">
+           <string>OneWire IDs</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_16">
+             <property name="text">
+              <string>1#</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="oneWireId1">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_19">
+             <property name="text">
+              <string>5#</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_17">
+             <property name="text">
+              <string>2#</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_18">
+             <property name="text">
+              <string>3#</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QLineEdit" name="oneWireId2">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_20">
+             <property name="text">
+              <string>7#</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="oneWireId3">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="oneWireId5">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="oneWireId7">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QLabel" name="label_21">
+             <property name="text">
+              <string>4#</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QLabel" name="label_22">
+             <property name="text">
+              <string>6#</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QLabel" name="label_23">
+             <property name="text">
+              <string>8#</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QLineEdit" name="oneWireId4">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3">
+            <widget class="QLineEdit" name="oneWireId6">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="3">
+            <widget class="QLineEdit" name="oneWireId8">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>
@@ -1019,32 +1036,28 @@ border-radius: 4px;
         <string>Optionen</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_27">
-        <item row="4" column="0" colspan="2">
-         <spacer name="verticalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
+        <item row="2" column="2">
+         <widget class="QGroupBox" name="groupBox_6">
+          <property name="title">
+           <string>Gui</string>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
+          <layout class="QGridLayout" name="gridLayout_31">
+           <item row="0" column="0" alignment="Qt::AlignTop">
+            <widget class="QCheckBox" name="optionenStartMinimiert">
+             <property name="text">
+              <string>Start minimiert</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </item>
-        <item row="1" column="0" colspan="2">
+        <item row="2" column="0" colspan="2">
          <widget class="QGroupBox" name="groupBox_3">
           <property name="title">
            <string>Alarm</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_29">
-           <item row="3" column="0">
-            <widget class="QCheckBox" name="optionenAlarmTemperatur">
-             <property name="text">
-              <string>Übertempertur</string>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="3">
             <spacer name="horizontalSpacer_4">
              <property name="orientation">
@@ -1058,25 +1071,6 @@ border-radius: 4px;
              </property>
             </spacer>
            </item>
-           <item row="0" column="1">
-            <widget class="QSpinBox" name="optionenAlarmMinDurchfluss">
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>100</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="maximum">
-              <number>5000</number>
-             </property>
-            </widget>
-           </item>
            <item row="4" column="0">
             <widget class="QCheckBox" name="optionenAlarmLuefter">
              <property name="text">
@@ -1084,96 +1078,30 @@ border-radius: 4px;
              </property>
             </widget>
            </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="label_29">
-             <property name="text">
-              <string>L/Hour</string>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0">
-            <widget class="QCheckBox" name="optionenAlarmDurchfluss">
-             <property name="maximumSize">
-              <size>
-               <width>100</width>
-               <height>16777215</height>
-              </size>
-             </property>
+            <widget class="QCheckBox" name="optionenAlarmTemperatur">
              <property name="text">
-              <string>Durchfluss</string>
+              <string>Übertempertur</string>
              </property>
             </widget>
            </item>
           </layout>
          </widget>
         </item>
-        <item row="0" column="0" alignment="Qt::AlignTop">
-         <widget class="QGroupBox" name="groupBox_5">
-          <property name="maximumSize">
+        <item row="5" column="0" colspan="2">
+         <spacer name="verticalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
            <size>
-            <width>16777215</width>
-            <height>16777215</height>
+            <width>20</width>
+            <height>40</height>
            </size>
           </property>
-          <property name="title">
-           <string>DFM / Pumpe</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_28">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_28">
-             <property name="maximumSize">
-              <size>
-               <width>120</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Impulse pro Liter</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QSpinBox" name="optionenDfmImpulse">
-             <property name="minimumSize">
-              <size>
-               <width>50</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>120</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="maximum">
-              <number>255</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
+         </spacer>
         </item>
-        <item row="1" column="2">
-         <widget class="QGroupBox" name="groupBox_6">
-          <property name="title">
-           <string>Sonstiges</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_31">
-           <item row="0" column="0" alignment="Qt::AlignTop">
-            <widget class="QCheckBox" name="optionenStartMinimiert">
-             <property name="text">
-              <string>Start minimiert</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="1" colspan="2" alignment="Qt::AlignTop">
+        <item row="1" column="0" colspan="2">
          <widget class="QGroupBox" name="groupBox_4">
           <property name="title">
            <string>Display</string>
@@ -1332,6 +1260,89 @@ border-radius: 4px;
           </layout>
          </widget>
         </item>
+        <item row="1" column="2">
+         <widget class="QGroupBox" name="groupBox_5">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="title">
+           <string>DFM / Pumpe</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_28">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_28">
+             <property name="maximumSize">
+              <size>
+               <width>120</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Impulse pro Liter</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QSpinBox" name="optionenDfmImpulse">
+             <property name="minimumSize">
+              <size>
+               <width>50</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>120</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="maximum">
+              <number>255</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_24">
+             <property name="text">
+              <string>Min. Durchfluss</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QSpinBox" name="optionenAlarmMinDurchfluss">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="maximum">
+              <number>5000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QLabel" name="label_29">
+             <property name="text">
+              <string>L/Hour</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tabDebug">
@@ -1417,7 +1428,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>581</width>
+     <width>601</width>
      <height>21</height>
     </rect>
    </property>

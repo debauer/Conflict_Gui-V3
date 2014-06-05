@@ -9,11 +9,13 @@ void ConflictCore::makeMapping(Data* obj, QString str){
 
 
 ConflictCore::ConflictCore(){
-
+    int i;
     kanal[0].setId(1);
     kanal[1].setId(2);
     kanal[2].setId(3);
     kanal[3].setId(4);
+    for(i=0;i<24;i++)
+        temperatur[i].setId(i+1);
 
     signalMapper = new QSignalMapper(this);
 
@@ -26,6 +28,8 @@ ConflictCore::ConflictCore(){
     makeMapping(&led, QString("led"));
     makeMapping(&lcd, QString("lcd"));
     makeMapping(&alarm, QString("alarm"));
+    for(i=0;i<24;i++)
+        makeMapping(&temperatur[i], QString("temperatur") + QString::number(i+1));
 
     QObject::connect(signalMapper, SIGNAL(mapped(QString)),this, SLOT(ChangedData(QString)));
 

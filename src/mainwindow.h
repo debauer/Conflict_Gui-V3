@@ -21,6 +21,10 @@
 #define STATUS_OK QString("ok")
 #define STATUS_ERROR QString("error")
 
+#define STYLE_PB_OK QString("QProgressBar{border: 2px solid grey;border-radius: 5px;text-align: center;} QProgressBar::chunk{background-color: #339900;width: 2.15px;margin: 0.5px;}")
+#define STYLE_PB_WARN QString("QProgressBar{border: 2px solid grey;border-radius: 5px;text-align: center;} QProgressBar::chunk{background-color: #CC9900;width: 2.15px;margin: 0.5px;}")
+#define STYLE_PB_BAD QString("QProgressBar{border: 2px solid grey;border-radius: 5px;text-align: center;} QProgressBar::chunk{background-color: #FB4400;width: 2.15px;margin: 0.5px;}")
+
 namespace Ui {
 class MainWindow;
 }
@@ -44,11 +48,15 @@ private:
     void disconnectCore(ConflictCore* core);
     QString guiStatus;
     QSignalMapper* signalMapper;
+
+    /* DASHBOARD */
+
     QGridLayout dashLayout;
-    QGroupBox dashBox[28];
-    QProgressBar dashProgressBar[28];
+    dashWidget dashWidgets[28];
     int dashPerRow = 3;
 
+    void drawDashboard();
+    //void DashChangeValue(int nr,int value);
 
 
 public slots:

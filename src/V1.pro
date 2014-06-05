@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     data/rechner.cpp \
     data/alarm.cpp \
     config.cpp \
-    qcustomplot/qcustomplot.cpp
+    qcustomplot/qcustomplot.cpp \
+    data/temperatur.cpp
 
 HEADERS  += fetchThread.h \
     mainwindow.h \
@@ -51,7 +52,8 @@ HEADERS  += fetchThread.h \
     data/rechner.h \
     data/alarm.h \
     config.h \
-    qcustomplot/qcustomplot.h
+    qcustomplot/qcustomplot.h \
+    data/temperatur.h
 
 
 FORMS    += \

@@ -18,6 +18,7 @@
 #include "data/rechner.h"
 #include "data/led.h"
 #include "data/lcd.h"
+#include "data/temperatur.h"
 #include "data/alarm.h"
 
 /*
@@ -57,6 +58,7 @@ class ConflictCore : public QObject{
         Dfm dfm;
         Alarm alarm;
         Kanal kanal[4];
+        Temperatur temperatur[24];
 
 
         void connectSerial(int port);
