@@ -24,7 +24,6 @@ SOURCES += main.cpp\
     conflict_core.cpp \
     carriage.cpp \
     driver/uart.cpp \
-    conflictwidget.cpp \
     data/dfm.cpp \
     data/kanal.cpp \
     data/data.cpp \
@@ -43,7 +42,6 @@ HEADERS  += fetchThread.h \
     driver/uart.h \
     driver/absInterface.h \
     structs.h \
-    conflictwidget.h \
     data/dfm.h \
     data/kanal.h \
     data/data.h \
