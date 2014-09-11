@@ -5,9 +5,6 @@
 #include <QDebug>
 #include <QDir>
 
-#include "ui_conflictwidget.h"
-#include "conflictwidget.h"
-
 //QList<ConflictCore> *core;
 //ConflictCore *core;
 PortSettings portSettings;
