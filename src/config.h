@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSettings>
+#include "QDebug"
 
 struct DataBase{
     QString user;
@@ -36,7 +37,7 @@ struct DisplayReplace{
     int lenght;
 };
 
-class config : public QObject{
+class Config : public QObject{
     Q_OBJECT
 public:
 
@@ -48,7 +49,7 @@ public:
     QList<DisplayReplace> displayReplace;
     QList<DisplayReplace> displayReplaceTemperature;
 
-    config();
+    Config();
     QSettings *settings;
     QString displayString(QString str);
     QString readQString(QString def, QString str);

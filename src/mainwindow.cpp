@@ -10,6 +10,7 @@
 PortSettings portSettings;
 QList<QextPortInfo> serialPorts;
 QextSerialPort *SerialPort;
+Config config;
 int init = false;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow){

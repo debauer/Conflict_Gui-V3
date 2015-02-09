@@ -1,20 +1,9 @@
 #include "config.h"
 
-config::config(){
+Config::Config(){
     int size;
     settings = new QSettings("config.ini", QSettings::IniFormat);
-
-    /* ======= DATABASE ========= */
-
-    settings->beginGroup("database");
-    if(settings->value("database").toString() != ""){
-        db.db   = readQString("",settings->value("name").toString());
-        db.pw   = readQString("",settings->value("password").toString());
-        db.host = readQString("",settings->value("host").toString());
-        db.user = readQString("",settings->value("user").toString());
-        db.port = readInt(3306,settings->value("port").toString());
-    }
-    settings->endGroup();
+    qDebug() << "lade ini";
 
     /* ======= COM PORT ========= */
 
@@ -60,34 +49,34 @@ config::config(){
 
 }
 
-QString config::displayString(QString str){
+QString Config::displayString(QString str){
     QString s;
     int i;
     if(settings->contains(str)){
         s = settings->value(str).toString();
-        for(i=0;i<24;i++){
-            if(i<10)
-                s.replace("%t" + QString::number(i+1), QString(192)+QString(i+1)+QString(0)+QString(0));
-            else
-                s.replace("%t0" + QString::number(i+1), QString(192)+QString(i+1)+QString(0)+QString(0));
-        }
-        QByteArray(193).append(1);
-        for(i=0;i<displayReplace.size();i++){
-            s.replace(displayReplace.at(i).before,QString((char)displayReplace.at(i).after));
-        }
+//        for(i=0;i<24;i++){
+//            if(i<10)
+//                s.replace("%t" + QString::number(i+1), QString(192)+QString(i+1)+QString(0)+QString(0));
+//            else
+//                s.replace("%t0" + QString::number(i+1), QString(192)+QString(i+1)+QString(0)+QString(0));
+//        }
+//        QByteArray(193).append(1);
+//        for(i=0;i<displayReplace.size();i++){
+//            s.replace(displayReplace.at(i).before,QString((char)displayReplace.at(i).after));
+//        }
     }
     else
         s = QString("                ");
 }
 
-QString config::readQString(QString def, QString str){
+QString Config::readQString(QString def, QString str){
     if(str == "")
         return def;
     else
         return str;
 }
 
-int config::readInt(int def, QString str){
+int Config::readInt(int def, QString str){
     if(str == "")
         return def;
     else
