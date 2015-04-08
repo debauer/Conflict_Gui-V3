@@ -20,6 +20,7 @@
 #include "data/lcd.h"
 #include "data/temperatur.h"
 #include "data/alarm.h"
+#include "config.h"
 
 /*
  *
@@ -56,6 +57,7 @@ class ConflictCore : public QObject{
         Led led;
         Lcd lcd;
         Dfm dfm;
+        Config config;
         Alarm alarm;
         Kanal kanal[4];
         Temperatur temperatur[24];
@@ -71,6 +73,7 @@ class ConflictCore : public QObject{
         void ChangedData(QString str); // Akkregator der Changed Signale von Daten Klassen. Emittet ebenfalls Changed()
         void sendCarriage(Carriage *car); //
         void initHW();
+        void initDisplay();
     signals:
         void Changed(ConflictCore* core, QString str);
         void initComplete();

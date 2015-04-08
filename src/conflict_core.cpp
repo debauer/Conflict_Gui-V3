@@ -78,6 +78,14 @@ void ConflictCore::initHW(){
     this->sendCarriage(car); // fire and forget. die Conflict erkennt die erste Anfrage meist nicht.
     car->set(1,0,0,0);
     this->sendCarriage(car);
+    this->initDisplay();
+}
+
+void ConflictCore::initDisplay(){
+    this->printDebug(QString("init Display"));
+    for(int i;i<256;i++){
+        lcd.setScreens(i,(int)config.display[i].toLatin1());
+    }
 }
 
 

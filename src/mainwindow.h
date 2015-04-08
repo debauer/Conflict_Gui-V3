@@ -7,7 +7,6 @@
 
 #include "carriage.h"
 #include "data/data.h"
-#include "config.h"
 
 #include "qextserialport.h"
 #include "qextserialenumerator.h"

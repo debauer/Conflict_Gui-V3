@@ -33,7 +33,7 @@ struct DashBoard{
 
 struct DisplayReplace{
     QString before;
-    unsigned char* after;
+    QString after;
     int lenght;
 };
 
@@ -41,10 +41,11 @@ class Config : public QObject{
     Q_OBJECT
 public:
 
-    DataBase db;
-    ComPort com;
+    int com_baud;
+    QString com_port;
+    DataBase *db;
     DashBoard defaultDash;
-    QByteArray display;
+    QString display;
     QStringList displayList;
     QList<DisplayReplace> displayReplace;
     QList<DisplayReplace> displayReplaceTemperature;
