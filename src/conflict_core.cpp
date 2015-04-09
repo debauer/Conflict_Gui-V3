@@ -34,6 +34,7 @@ ConflictCore::ConflictCore(){
     QObject::connect(signalMapper, SIGNAL(mapped(QString)),this, SLOT(ChangedData(QString)));
 
     //QObject::connect(this, SIGNAL(syncData()),&led,SLOT(RequestData()));
+
 }
 
 void ConflictCore::connectSerial(int port){
@@ -83,8 +84,10 @@ void ConflictCore::initHW(){
 
 void ConflictCore::initDisplay(){
     this->printDebug(QString("init Display"));
-    for(int i;i<256;i++){
-        lcd.setScreens(i,(int)config.display[i].toLatin1());
+    uint8_t value;
+    for(int i=0;i<config.displayArray.size();i++){
+        value = (uint8_t)config.displayArray.at(i);
+        lcd.setContent(i,(uint8_t)config.displayArray.at(i));
     }
 }
 

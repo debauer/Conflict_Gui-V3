@@ -5,7 +5,7 @@ Lcd::Lcd() : Data(){
     for(i = 0;i<255;i++){
         content[i].max = 255;
         content[i].min = 0;
-        content[i].value = 0;
+        content[i].value = -1;
         content[i].type = TYPE_SETUP;
         content[i].car.setIndex(i+1);
         content[i].car.setId(80);

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSettings>
 #include "QDebug"
+#include "data/lcd.h"
 
 struct DataBase{
     QString user;
@@ -33,7 +34,7 @@ struct DashBoard{
 
 struct DisplayReplace{
     QString before;
-    QString after;
+    QByteArray after;
     int lenght;
 };
 
@@ -44,8 +45,10 @@ public:
     int com_baud;
     QString com_port;
     DataBase *db;
+    Lcd *lcd;
     DashBoard defaultDash;
     QString display;
+    QByteArray displayArray;
     QStringList displayList;
     QList<DisplayReplace> displayReplace;
     QList<DisplayReplace> displayReplaceTemperature;
@@ -55,6 +58,9 @@ public:
     QString displayString(QString str);
     QString readQString(QString def, QString str);
     int readInt(int def, QString str);
+
+private:
+
 };
 
 #endif // CONFIG_H
