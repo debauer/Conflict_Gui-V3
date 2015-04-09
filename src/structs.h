@@ -20,7 +20,7 @@ struct intValue{
 
 struct dashWidget{
     QGroupBox box;
-    QProgressBar progressBar;
+    QProgressBar *progressBar;
     int aktiv = 1;
     int value = 33;
     int type = DASHWIDGET_BAR;

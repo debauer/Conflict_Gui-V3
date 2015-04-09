@@ -80,6 +80,7 @@ class ConflictCore : public QObject{
         void newCarriage(Carriage *car);
         void debugOutput(QString  str);
         void syncData();
+        void updateDash();
 };
 
 #endif // CONFLICT_CORE_H

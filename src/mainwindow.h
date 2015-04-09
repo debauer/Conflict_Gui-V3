@@ -38,6 +38,12 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    dashWidget dfmWidget;
+    dashWidget cpuWidget;
+    dashWidget ramWidget;
+    dashWidget gpuWidget;
+    dashWidget kanalWidget[4];
+    dashWidget temperaturWidget[24];
 
 private:
     Ui::MainWindow *ui;
@@ -52,10 +58,10 @@ private:
     /* DASHBOARD */
 
     QGridLayout dashLayout;
-    dashWidget dashWidgets[28];
     int dashPerRow = 3;
 
     void drawDashboard();
+    struct dashWidget* getWidgetPtr(QString asd);
     //void DashChangeValue(int nr,int value);
 
 
@@ -74,6 +80,7 @@ public slots:
     void initComplete();
     void updateTabKanaeleGrenzwert(int kanal);
     void speicherKanal();
+    void updateDash();
 //    void speicherTemperatur();
 };
 

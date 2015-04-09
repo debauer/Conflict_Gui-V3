@@ -47,16 +47,16 @@ public:
     DataBase *db;
     Lcd *lcd;
     DashBoard defaultDash;
+    QList<DashBoard> dash;
     QString display;
     QByteArray displayArray;
-    QStringList displayList;
     QList<DisplayReplace> displayReplace;
-    QList<DisplayReplace> displayReplaceTemperature;
 
     Config();
     QSettings *settings;
     QString displayString(QString str);
     QString readQString(QString def, QString str);
+    QString readSplitQString(QString def, QString str, QString splitChar,int index);
     int readInt(int def, QString str);
 
 private:

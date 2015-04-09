@@ -1,6 +1,6 @@
 #include "config.h"
 
-QString space = "             ";
+DashBoard dashDummy;
 
 Config::Config(){
     int size;
@@ -17,6 +17,37 @@ Config::Config(){
     qDebug() << com_port;
 
     /* ======= DASH ========= */
+
+    settings->beginGroup("dash");
+
+    defaultDash.type =          readQString("lcd",      settings->value("type").toString());
+    defaultDash.colorOk =       readSplitQString("green",    settings->value("color").toString(),",",0);
+    defaultDash.colorWarn =     readSplitQString("orange",   settings->value("color").toString(),",",1);
+    defaultDash.colorError =    readSplitQString("red",      settings->value("color").toString(),",",2);
+    defaultDash.rangeStart =    readSplitQString("0",        settings->value("range").toString(),",",0);
+    defaultDash.rangeEnd =      readSplitQString("0",        settings->value("range").toString(),",",1);
+    defaultDash.limitOk =       readSplitQString("40",       settings->value("limit").toString(),",",0);
+    defaultDash.limitWarn =     readSplitQString("50",       settings->value("limit").toString(),",",1);
+    defaultDash.limitAlarm =    readSplitQString("65",       settings->value("limit").toString(),",",2);
+
+    size = settings->beginReadArray("widget");
+    for (int i = 0; i < size; ++i) {
+        settings->setArrayIndex(i);
+        if(settings->value("value").toString() != ""){
+            dashDummy.value =          settings->value("value").toString();
+            dashDummy.colorOk =        readSplitQString(defaultDash.colorOk,         settings->value("color").toString(),",",0);
+            dashDummy.colorWarn =      readSplitQString(defaultDash.colorWarn,       settings->value("color").toString(),",",1);
+            dashDummy.colorError =     readSplitQString(defaultDash.colorError,      settings->value("color").toString(),",",2);
+            dashDummy.rangeStart =     readSplitQString(defaultDash.rangeStart,      settings->value("range").toString(),",",0);
+            dashDummy.rangeEnd =       readSplitQString(defaultDash.rangeEnd,        settings->value("range").toString(),",",1);
+            dashDummy.limitOk =        readSplitQString(defaultDash.limitOk,         settings->value("limit").toString(),",",0);
+            dashDummy.limitWarn =      readSplitQString(defaultDash.limitWarn,       settings->value("limit").toString(),",",1);
+            dashDummy.limitAlarm =     readSplitQString(defaultDash.limitAlarm,      settings->value("limit").toString(),",",2);
+            dash.append(dashDummy);
+        }
+    }
+    settings->endArray();
+    settings->endGroup();
 
     /* ======= DISPLAY ========= */
 
@@ -123,6 +154,20 @@ QString Config::readQString(QString def, QString str){
         return def;
     else
         return str;
+}
+
+QString Config::readSplitQString(QString def, QString str, QString splitChar,int index){
+    QStringList sl;
+    if(str == "")
+        return def;
+    else
+        sl = str.split(",");
+        qDebug() << "size: " << sl.size() << " index: " << index;
+        if(sl.size() <= index){
+            return def;
+        }else{
+            return sl[index];
+        }
 }
 
 int Config::readInt(int def, QString str){

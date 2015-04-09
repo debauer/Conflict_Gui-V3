@@ -80,6 +80,7 @@ void ConflictCore::initHW(){
     car->set(1,0,0,0);
     this->sendCarriage(car);
     this->initDisplay();
+    emit updateDash();
 }
 
 void ConflictCore::initDisplay(){

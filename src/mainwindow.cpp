@@ -59,7 +59,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->customPlot->xAxis->setRange(1, 0);
     ui->customPlot->yAxis->setRange(0, 1);
     ui->customPlot->replot();
-    this->drawDashboard();
 }
 
 MainWindow::~MainWindow(){
@@ -71,7 +70,7 @@ void MainWindow::connectCore(ConflictCore* core){
     // CORE -> GUI Connects
 
     QObject::connect (core, SIGNAL(debugOutput(QString)), this, SLOT(debugConsole(QString)));
-
+    QObject::connect (core, SIGNAL(updateDash()), this, SLOT(updateDash()));
     //QObject::connect (core, SIGNAL(Changed(ConflictCore*,QString)), this, SLOT(updateGui(ConflictCore*,QString)));
 
     QObject::connect (core, SIGNAL(initComplete()), this, SLOT(initComplete()));
@@ -99,7 +98,7 @@ void MainWindow::connectCore(ConflictCore* core){
     });
     QObject::connect(&core->dfm,&Dfm::HardwareChanged,[=](int type){
         if(type == TYPE_VALUE){
-            dashWidgets[3].progressBar.setValue(core->dfm.getWaterFlow());
+            dfmWidget.progressBar->setValue(core->dfm.getWaterFlow());
         }else if(type == TYPE_SETUP){
             ui->optionenDfmImpulse->setValue(core->dfm.getPulsePerLiter());
             ui->optionenAlarmMinDurchfluss->setValue(core->dfm.getMinFlow());
@@ -108,7 +107,7 @@ void MainWindow::connectCore(ConflictCore* core){
     for(i=0;i<3;i++){
         QObject::connect(&core->kanal[i],&Kanal::HardwareChanged,[=](int type){
             if(type == TYPE_VALUE){
-                dashWidgets[i].progressBar.setValue(core->kanal[i].getRpm());
+                kanalWidget[i].progressBar->setValue(core->kanal[i].getRpm());
             }else if(type == TYPE_SETUP){
             }
         });
@@ -117,7 +116,7 @@ void MainWindow::connectCore(ConflictCore* core){
     for(i=0;i<24;i++){
         QObject::connect(&core->temperatur[i],&Temperatur::HardwareChanged,[=](int type){
             if(type == TYPE_VALUE){
-                dashWidgets[i+4].progressBar.setValue(core->temperatur[i].getWert());
+                temperaturWidget[i].progressBar->setValue(core->temperatur[i].getWert());
             }else if(type == TYPE_SETUP){
                 ui->oneWireId1->setText(core->temperatur[0].getOneWireId());
                 ui->oneWireId2->setText(core->temperatur[1].getOneWireId());
@@ -196,8 +195,9 @@ ConflictCore* MainWindow::newCore(){
 void MainWindow::newCoreSerial(int serId){
      guiStatus = STATUS_INIT;
      ConflictCore *core = this->newCore();
-     core->connectSerial(serId);
      this->aktivCore = core;
+     core->connectSerial(serId);
+
      //ConflictWidget *conflictWidget = new ConflictWidget();
      //Ui::ConflictWidget *conflictUi = conflictWidget->getObject();
      //ui->Tabs->addTab(conflictWidget,QString(""));
@@ -331,7 +331,23 @@ void MainWindow::debugConsole(QString str){
      ui->console->append(str);
 }
 
+void MainWindow::updateDash(){
+     qDebug() << "updateDash";
+     this->drawDashboard();
+}
 
+struct dashWidget* MainWindow::getWidgetPtr(QString valueName){
+    if(valueName == "dfm")return &dfmWidget;
+    if(valueName == "ram")return &ramWidget;
+    if(valueName == "gpu")return &gpuWidget;
+    if(valueName == "cpu")return &cpuWidget;
+    if(valueName.at(0) == QChar('t')){
+        qDebug() << "dafuq" << valueName << valueName.remove(0,1).toInt();
+        return &this->temperaturWidget[1];
+    }
+    if(valueName.at(0) == QChar('f'))return &kanalWidget[valueName.remove(0,1).toInt()];
+    return 0;
+}
 
 void MainWindow::drawDashboard(){
     int i,j,k;
@@ -339,35 +355,39 @@ void MainWindow::drawDashboard(){
     i = 0;
     j = 0;
     k = 0;
-    for(i = 0; i<28; i++){
-        dashWidgets[i].box.setLayout(new QGridLayout());
-        dashWidgets[i].box.layout()->addWidget(&dashWidgets[i].progressBar);
-        dashLayout.addWidget(&dashWidgets[i].box,k,j);
-        if(j == dashPerRow){
-            j = 0;
-            k++;
-        }else{
-            j++;
+    qDebug() << "drawDash";
+    // init widgets
+    dfmWidget.box.setLayout(new QGridLayout());
+    ramWidget.box.setLayout(new QGridLayout());
+    gpuWidget.box.setLayout(new QGridLayout());
+    cpuWidget.box.setLayout(new QGridLayout());
+    for(i=0;i<24;i++)temperaturWidget[i].box.setLayout(new QGridLayout());
+    for(i=0;i<4;i++)kanalWidget[i].box.setLayout(new QGridLayout());
+    qDebug() << "layouts ok";
+    dashWidget *dw;
+    for(i = 0; i<aktivCore->config.dash.size(); i++){
+        qDebug() << "for " << i;
+        if(aktivCore->config.dash[i].value != ""){
+            dw = getWidgetPtr(aktivCore->config.dash[i].value);
+            if(aktivCore->config.dash[i].type == "progressBar"){
+                dw->box.layout()->addWidget(dw->progressBar);
+            }else{
+                dw->box.layout()->addWidget(dw->progressBar);
+            }
+            dashLayout.addWidget(&dw->box,k,j);
+            if(j == dashPerRow){
+                j = 0;
+                k++;
+            }else{
+                j++;
+            }
+            dw->progressBar->setMaximum(199);
+            dw->progressBar->setValue(dw->value);
+            dw->progressBar->setStyleSheet(STYLE_PB_OK);
+            dw->progressBar->setFormat(QString("%v C°"));
+            dw->box.setTitle(QString("Temperatur ") + QString::number(i+1-4));
         }
-        dashWidgets[i].progressBar.setMaximum(199);
-        dashWidgets[i].progressBar.setValue(dashWidgets[i].value);
-        dashWidgets[i].progressBar.setStyleSheet(STYLE_PB_OK);
-        dashWidgets[i].progressBar.setFormat(QString("%v C°"));
-        dashWidgets[i].box.setTitle(QString("Temperatur ") + QString::number(i+1-4));
     }
-
-    dashWidgets[0].progressBar.setMaximum(9999);
-    dashWidgets[1].progressBar.setMaximum(9999);
-    dashWidgets[2].progressBar.setMaximum(9999);
-    dashWidgets[3].progressBar.setMaximum(999);
-    dashWidgets[0].progressBar.setFormat(QString("%v rpm"));
-    dashWidgets[1].progressBar.setFormat(QString("%v rpm"));
-    dashWidgets[2].progressBar.setFormat(QString("%v rpm"));
-    dashWidgets[3].progressBar.setFormat(QString("%v l/h"));
-    dashWidgets[0].box.setTitle(QString("Kanal 1"));
-    dashWidgets[1].box.setTitle(QString("Kanal 2"));
-    dashWidgets[2].box.setTitle(QString("Kanal 3"));
-    dashWidgets[3].box.setTitle(QString("Kanal 4 - DFM"));
     ui->tabDash2->setLayout(&dashLayout);
 
     //dashWidgets[13].progressBar.setStyleSheet(STYLE_PB_WARN);

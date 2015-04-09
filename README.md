@@ -19,14 +19,14 @@ This Version is not STABLE and only for developing the Firmware and for testing.
 
 <b>missing functions</b>
 - disconnect
-- reset
 - showing the temperatures and fan Speeds
 - one wire Sensors
 - CPU/GPU/RAM usage and Hour
-- display Settings
 
 <b>mostly stable</b>
+- HW restart
 - Channel settings
+- Display settings via Config File
 - RGB LED
 - Alarm settings
 - LCD backlight and contrast
