@@ -14,7 +14,7 @@ void Temperatur::ProcessData(Carriage *car){
     if(car->getIndex() == this->id){
         switch(car->getId()){
             case 30:
-                this->SetValue(&wert,car->getData().toInt(),DATA_FROM_HW);
+                this->SetValue(&wert,car->getData().toDouble()/2,DATA_FROM_HW);
                 break;
             case 31:
                 this->SetValue(&spare,car->getData().toInt(),DATA_FROM_HW);
@@ -41,8 +41,12 @@ int Temperatur::getSpare(){
     return spare.value;
 }
 
-void Temperatur::setWert(int value){
+void Temperatur::setWert(double value){
     this->SetValue(&wert, value);
+}
+
+void Temperatur::setWert(int value){
+    this->SetValue(&wert, (double)value);
 }
 
 int Temperatur::getWert(){

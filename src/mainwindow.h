@@ -38,12 +38,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    dashWidget dfmWidget;
-    dashWidget cpuWidget;
-    dashWidget ramWidget;
-    dashWidget gpuWidget;
-    dashWidget kanalWidget[4];
-    dashWidget temperaturWidget[24];
 
 private:
     Ui::MainWindow *ui;

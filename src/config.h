@@ -21,6 +21,7 @@ struct ComPort{
 
 struct DashBoard{
     QString type;
+    QString name;
     QString value;
     QString colorOk;
     QString colorWarn;

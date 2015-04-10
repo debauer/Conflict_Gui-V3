@@ -21,6 +21,7 @@ Config::Config(){
     settings->beginGroup("dash");
 
     defaultDash.type =          readQString("lcd",      settings->value("type").toString());
+    defaultDash.name =          readQString("default",      settings->value("name").toString());
     defaultDash.colorOk =       readSplitQString("green",    settings->value("color").toString(),",",0);
     defaultDash.colorWarn =     readSplitQString("orange",   settings->value("color").toString(),",",1);
     defaultDash.colorError =    readSplitQString("red",      settings->value("color").toString(),",",2);
@@ -34,7 +35,9 @@ Config::Config(){
     for (int i = 0; i < size; ++i) {
         settings->setArrayIndex(i);
         if(settings->value("value").toString() != ""){
+            dashDummy.type =           readQString(defaultDash.type,      settings->value("type").toString());
             dashDummy.value =          settings->value("value").toString();
+            dashDummy.name =           readQString(defaultDash.name,      settings->value("name").toString());
             dashDummy.colorOk =        readSplitQString(defaultDash.colorOk,         settings->value("color").toString(),",",0);
             dashDummy.colorWarn =      readSplitQString(defaultDash.colorWarn,       settings->value("color").toString(),",",1);
             dashDummy.colorError =     readSplitQString(defaultDash.colorError,      settings->value("color").toString(),",",2);

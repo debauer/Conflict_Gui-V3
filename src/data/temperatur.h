@@ -8,7 +8,7 @@ class Temperatur : public Data{
     Q_OBJECT
 
 private:
-    intValue wert    = {0,0,255, TYPE_VALUE, Carriage(0,30,0,0)};
+    doubleValue wert    = {0.0,0.0,255.0, TYPE_VALUE, Carriage(0,30,0,0)};
     intValue spare   = {0,0,255, TYPE_SETUP, Carriage(0,31,0,0)};
     bool onewire = false;
     QByteArray onewireId;
@@ -20,6 +20,7 @@ public:
     Temperatur();
 
 public slots:
+    void setWert(double value);
     void setWert(int value);
     void setSpare(int value);
     void ProcessData(Carriage *car); // Parant Member überladen

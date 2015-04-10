@@ -35,6 +35,36 @@ ConflictCore::ConflictCore(){
 
     //QObject::connect(this, SIGNAL(syncData()),&led,SLOT(RequestData()));
 
+
+    // init widgets
+    dfmWidget.box = new QGroupBox();
+    dfmWidget.progressBar = new QProgressBar();
+    dfmWidget.lcdnumber = new QLCDNumber();
+    dfmWidget.box->setLayout(new QGridLayout());
+    ramWidget.box = new QGroupBox();
+    ramWidget.progressBar = new QProgressBar();
+    ramWidget.lcdnumber = new QLCDNumber();
+    ramWidget.box->setLayout(new QGridLayout());
+    gpuWidget.box = new QGroupBox();
+    gpuWidget.progressBar = new QProgressBar();
+    gpuWidget.lcdnumber = new QLCDNumber();
+    gpuWidget.box->setLayout(new QGridLayout());
+    cpuWidget.box = new QGroupBox();
+    cpuWidget.progressBar = new QProgressBar();
+    cpuWidget.lcdnumber = new QLCDNumber();
+    cpuWidget.box->setLayout(new QGridLayout());
+    for(i=0;i<24;i++){
+        temperaturWidget[i].box = new QGroupBox();
+        temperaturWidget[i].progressBar = new QProgressBar();
+        temperaturWidget[i].lcdnumber = new QLCDNumber();
+        temperaturWidget[i].box->setLayout(new QGridLayout());
+    }
+    for(i=0;i<4;i++){
+        kanalWidget[i].box = new QGroupBox();
+        kanalWidget[i].progressBar = new QProgressBar();
+        kanalWidget[i].lcdnumber = new QLCDNumber();
+        kanalWidget[i].box->setLayout(new QGridLayout());
+    }
 }
 
 void ConflictCore::connectSerial(int port){

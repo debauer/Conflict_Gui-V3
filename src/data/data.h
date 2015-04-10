@@ -51,6 +51,8 @@ protected:
 public:
     void SetValue (intValue (*ptr), int value); // möglichst nicht überschreiben!
     void SetValue (intValue (*ptr), int value, QString option);
+    void SetValue (doubleValue (*ptr), double value); // möglichst nicht überschreiben!
+    void SetValue (doubleValue (*ptr), double value, QString option);
     void disableChanged();
     void enableChanged();
     void emitChanged();             // Wrapper um changed zu deaktivieren.

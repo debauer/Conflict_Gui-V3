@@ -62,6 +62,12 @@ class ConflictCore : public QObject{
         Kanal kanal[4];
         Temperatur temperatur[24];
 
+        dashWidget dfmWidget;
+        dashWidget cpuWidget;
+        dashWidget ramWidget;
+        dashWidget gpuWidget;
+        dashWidget kanalWidget[4];
+        dashWidget temperaturWidget[24];
 
         void connectSerial(int port);
         void connectETH(QString ip);
